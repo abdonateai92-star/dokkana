@@ -29,6 +29,7 @@ header button{ background:var(--red); color:#fff; border:none; border-radius:10p
 .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 .badge{ border-radius:12px; padding:3px 10px; font-size:12px; font-weight:700; }
 .b-new{ background:#fff3cd; color:#856404; } .b-confirmed{ background:#d1ecf1; color:#0c5460; }
+.b-courier{ background:#ede7f6; color:#4527a0; }
 .b-shipped{ background:#cce5ff; color:#004085; } .b-delivered{ background:#d4edda; color:#155724; }
 .b-canceled{ background:#f8d7da; color:#721c24; }
 .item{ border-bottom:1px solid #eef0f5; padding:10px 0; display:flex; justify-content:space-between; gap:10px; align-items:center; }
@@ -97,7 +98,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth(), db = firebase.firestore();
 const C = DokkanaCore;
 const $ = id => document.getElementById(id);
-const STATUS = { new:"جديد", confirmed:"مؤكد", shipped:"اتشحن", delivered:"اتسلم", canceled:"ملغي" };
+const STATUS = { new:"جديد", confirmed:"مؤكد", courier:"اتسلّم للشحن", shipped:"اتشحن", delivered:"اتسلم", canceled:"ملغي" };
 let editId = null, editImages = [], catsCache = [];
 let orderFilter = "all", orderQuery = "";
 
@@ -173,7 +174,7 @@ async function renderOrders(){
         ${o.customer.notes?("<br>📝 "+o.customer.notes):""}<br>
         💳 ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}${o.promoCode?(" — 🏷️ "+o.promoCode):""} — ${ts(o)?ts(o).toLocaleString("ar-EG"):""}</p>
       <div style="margin:8px 0">${o.items.map(i=>`<div class="muted">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""} — ${C.eg(i.price*i.qty)}</div>`).join("")}</div>
-      <b>الإجمالي: ${C.eg(o.total)}</b> <span class="muted">(شحن: ${C.eg(o.deliveryFee)}${o.discount?(" — خصم: "+C.eg(o.discount)):""})</span>
+      <b>الإجمالي: ${C.eg(o.total)}</b> <span class="muted">(شحن: ${C.eg(o.deliveryFee)}${o.discount?(" — خصم: "+C.eg(o.discount)):""})</span>${o.trackingNumber?` <span class="muted">— تتبع: <b dir="ltr">${o.trackingNumber}</b></span>`:""}
       <div class="row" style="margin-top:10px">
         <select onchange="setStatus('${o.id}', this.value)">
           ${Object.keys(STATUS).map(k=>`<option value="${k}" ${o.status===k?"selected":""}>${STATUS[k]}</option>`).join("")}
@@ -184,7 +185,14 @@ async function renderOrders(){
     </div>`).join("") : `<div class="card"><div class="empty">مفيش طلبات هنا 📦</div></div>`}`;
 }
 function setOF(f){ orderFilter=f; renderOrders(); }
-async function setStatus(id, st){ await db.collection("orders").doc(id).update({status:st}); renderOrders(); }
+async function setStatus(id, st){
+  const upd = { status: st };
+  if (st === "courier"){
+    const tn = prompt("رقم التتبع عند شركة الشحن (اختياري):");
+    if (tn && tn.trim()) upd.trackingNumber = tn.trim();
+  }
+  await db.collection("orders").doc(id).update(upd); renderOrders();
+}
 async function delOrder(id){ if(confirm("حذف الطلب نهائيًا؟")) { await db.collection("orders").doc(id).delete(); renderOrders(); } }
 async function exportCSV(){
   const orders = await fetchOrders();
@@ -397,6 +405,7 @@ async function renderSettings(){
       <div class="field"><label>رقم فودافون كاش (لاستلام التحويلات)</label><input id="sVf" inputmode="numeric" placeholder="01xxxxxxxxx" value="${st.vodafoneNumber||""}"></div>
       <div class="field"><label>رقم واتساب خدمة العملاء (بالكود الدولي بدون +، مثال: 2010xxxxxxxx)</label><input id="sWa" inputmode="numeric" placeholder="2010xxxxxxxx" value="${st.whatsappNumber||""}"></div>
       <div class="field"><label>شريط إعلان أعلى المتجر (فاضي = مخفي)</label><input id="sAnn" placeholder="مثال: شحن مجاني للطلبات فوق 1000 ج.م 🎉" value="${(st.announcement||"").replace(/"/g,'&quot;')}"></div>
+      <div class="field"><label>اسم شركة الشحن (بيظهر للعميل في تتبع الطلب)</label><input id="sCourier" placeholder="مثال: أرامكس" value="${(st.courierName||"").replace(/"/g,'&quot;')}"></div>
     </div>
     <div class="card">
       <h3>🚚 مصاريف الشحن</h3>
@@ -416,6 +425,7 @@ async function saveSettings(){
     vodafoneNumber: $("sVf").value.trim(),
     whatsappNumber: $("sWa").value.trim(),
     announcement: $("sAnn").value.trim(),
+    courierName: $("sCourier").value.trim(),
     fees: { default: Number($("sFeeDef").value||0), govs }
   }, {merge:true});
   $("sMsg").textContent = "تم الحفظ ✅ المتجر هيتحدث خلال 5 دقايق عند الزوار (أو فورًا لأي زيارة جديدة)";
