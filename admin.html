@@ -57,6 +57,12 @@ h3{ margin-bottom:10px; }
 .chips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
 .chip{ border:1.5px solid #d8dbe6; background:#fff; border-radius:16px; padding:5px 13px; font-size:12.5px; font-weight:700; cursor:pointer; }
 .chip.on{ background:var(--navy); color:#fff; }
+.bars{ display:flex; align-items:flex-end; gap:7px; height:120px; direction:ltr; margin-top:12px; }
+.bar{ flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:5px; height:100%; min-width:0; }
+.bar i{ display:block; width:100%; max-width:34px; border-radius:7px 7px 0 0; background:linear-gradient(180deg,#f2a619,#d98e04); min-height:3px; }
+.bar b{ font-size:10.5px; color:#856404; }
+.bar span{ font-size:10.5px; color:#999; }
+.govline{ display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed #eee; font-size:13.5px; }
 </style>
 </head>
 <body>
@@ -99,7 +105,7 @@ const auth = firebase.auth(), db = firebase.firestore();
 const C = DokkanaCore;
 const $ = id => document.getElementById(id);
 const STATUS = { new:"جديد", confirmed:"مؤكد", courier:"اتسلّم للشحن", shipped:"اتشحن", delivered:"اتسلم", canceled:"ملغي" };
-let editId = null, editImages = [], catsCache = [];
+let editId = null, editImages = [], catsCache = [], ordersCache = [];
 let orderFilter = "all", orderQuery = "";
 
 auth.onAuthStateChanged(u => {
@@ -136,6 +142,14 @@ async function renderDash(){
     </div>
     <div class="card" style="margin-top:12px"><h3>💰 إيراد كل الطلبات غير الملغاة: ${C.eg(s.revenue)}</h3>
       <span class="muted">ملغي: ${s.canceled} طلب</span></div>
+    <div class="card"><h3>📈 إيراد آخر 7 أيام</h3>
+      ${(()=>{ const d=C.revenueByDay(orders,7,new Date()); const mx=Math.max.apply(null,d.map(x=>x.revenue).concat([1]));
+        return `<div class="bars">${d.map(x=>`<div class="bar">${x.revenue?`<b>${x.revenue}</b>`:""}<i style="height:${Math.round(x.revenue/mx*72)}px"></i><span>${x.label}</span></div>`).join("")}</div>`; })()}
+    </div>
+    <div class="card"><h3>🗺️ أكتر المحافظات طلبًا</h3>
+      ${(()=>{ const g=C.topGovernorates(orders,5);
+        return g.length ? g.map(([n,c])=>`<div class="govline"><span>${n}</span><b>${c} طلب</b></div>`).join("") : `<div class="empty">لسه مفيش طلبات</div>`; })()}
+    </div>
     <div class="card"><h3>🏆 الأكثر مبيعًا</h3>
       ${s.topProducts.length ? s.topProducts.map(([n,q],i)=>`<div class="item"><span>${i+1}. ${n}</span><b>${q} قطعة</b></div>`).join("") : `<div class="empty">لسه مفيش مبيعات</div>`}
     </div>
@@ -148,6 +162,7 @@ async function renderDash(){
 async function renderOrders(){
   $("main").innerHTML = `<div class="empty">جاري التحميل…</div>`;
   let orders = await fetchOrders();
+  ordersCache = orders;
   const newCount = orders.filter(o=>o.status==="new").length;
   $("ordBadge").textContent = newCount ? `(${newCount})` : "";
   const q = orderQuery.trim();
@@ -180,6 +195,7 @@ async function renderOrders(){
           ${Object.keys(STATUS).map(k=>`<option value="${k}" ${o.status===k?"selected":""}>${STATUS[k]}</option>`).join("")}
         </select>
         <a class="btn gray" style="text-decoration:none" target="_blank" href="https://wa.me/2${o.customer.phone}?text=${encodeURIComponent("أهلًا "+o.customer.name+"، معاك دكانة بخصوص طلبك "+o.id)}">📲 واتساب العميل</a>
+        <button class="btn gray" onclick="printLabel('${o.id}')">🖨️ بوليصة</button>
         <button class="btn red" onclick="delOrder('${o.id}')">حذف</button>
       </div>
     </div>`).join("") : `<div class="card"><div class="empty">مفيش طلبات هنا 📦</div></div>`}`;
@@ -194,6 +210,14 @@ async function setStatus(id, st){
   await db.collection("orders").doc(id).update(upd); renderOrders();
 }
 async function delOrder(id){ if(confirm("حذف الطلب نهائيًا؟")) { await db.collection("orders").doc(id).delete(); renderOrders(); } }
+async function printLabel(id){
+  const o = ordersCache.find(x=>x.id===id); if (!o) return;
+  const st = (await db.collection("settings").doc("store").get().catch(()=>({exists:false}))).data?.() || {};
+  const html = C.shippingLabelHTML(o, o.id, st, {dateStr: ts(o) ? ts(o).toLocaleString("ar-EG") : ""});
+  const w = window.open("", "_blank");
+  if (!w) return alert("المتصفح منع النافذة المنبثقة — اسمح بيها وجرّب تاني");
+  w.document.write(html); w.document.close();
+}
 async function exportCSV(){
   const orders = await fetchOrders();
   const blob = new Blob([C.ordersToCSV(orders)], {type:"text/csv;charset=utf-8"});
