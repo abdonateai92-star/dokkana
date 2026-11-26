@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'abdonateai92@gmail.com';
+    }
+
+    // الأقسام: الكل يقرأ، الأدمن بس يكتب
+    match /categories/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // المنتجات: الكل يقرأ، الأدمن بس يكتب
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // إعدادات المتجر (رقم فودافون كاش، واتساب، مصاريف الشحن)
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // الطلبات: أي حد ينشئ طلب، القراءة والتعديل للأدمن بس
+    match /orders/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

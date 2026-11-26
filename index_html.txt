@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دكانة — تسوق أونلاين في مصر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; }
+  body { background:#f6f6f8; color:#1a1a2e; padding-bottom:90px; }
+  header { background:#1a1a2e; color:#fff; padding:14px 16px; position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:26px; font-weight:800; }
+  .logo span { color:#f5c518; }
+  #cartBtn { background:#f5c518; color:#1a1a2e; border:none; border-radius:12px; padding:8px 14px;
+    font-weight:700; font-size:15px; cursor:pointer; position:relative; }
+  #cartCount { position:absolute; top:-8px; left:-8px; background:#e74c3c; color:#fff; border-radius:50%;
+    width:22px; height:22px; font-size:12px; display:flex; align-items:center; justify-content:center; }
+  #cats { display:flex; gap:8px; overflow-x:auto; padding:12px 16px; background:#fff; position:sticky; top:60px; z-index:40; }
+  .chip { white-space:nowrap; border:1px solid #ddd; background:#fff; border-radius:20px; padding:7px 16px;
+    font-size:14px; font-weight:600; cursor:pointer; }
+  .chip.on { background:#1a1a2e; color:#fff; border-color:#1a1a2e; }
+  #grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:14px 16px; }
+  @media(min-width:700px){ #grid{ grid-template-columns:repeat(4,1fr); max-width:1100px; margin:auto; } }
+  .card { background:#fff; border-radius:14px; overflow:hidden; cursor:pointer;
+    box-shadow:0 1px 4px rgba(0,0,0,.06); display:flex; flex-direction:column; }
+  .card img { width:100%; aspect-ratio:1; object-fit:cover; background:#eee; }
+  .card .info { padding:10px 12px; flex:1; display:flex; flex-direction:column; }
+  .card .name { font-size:14px; font-weight:600; margin-bottom:6px; }
+  .price { font-weight:800; color:#0a7d32; font-size:15px; }
+  .old { text-decoration:line-through; color:#999; font-size:12px; font-weight:400; margin-right:6px; }
+  .addbtn { margin-top:8px; background:#1a1a2e; color:#fff; border:none; border-radius:10px;
+    padding:8px; font-weight:700; cursor:pointer; font-size:13px; }
+  .empty { text-align:center; padding:60px 20px; color:#888; font-size:16px; grid-column:1/-1; }
+
+  /* نافذة المنتج */
+  .overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:100; display:none;
+    align-items:flex-end; justify-content:center; }
+  .overlay.show { display:flex; }
+  .sheet { background:#fff; width:100%; max-width:520px; border-radius:20px 20px 0 0;
+    max-height:88vh; overflow-y:auto; padding:18px; }
+  .sheet img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:14px; background:#eee; }
+  .sheet h2 { font-size:19px; margin:12px 0 4px; }
+  .sheet .desc { color:#666; font-size:14px; margin:8px 0; line-height:1.7; }
+  .optrow { margin:10px 0; }
+  .optrow label { font-weight:700; font-size:14px; display:block; margin-bottom:6px; }
+  .optrow select, .optrow input { width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; font-size:15px; }
+  .qty { display:flex; align-items:center; gap:12px; }
+  .qty button { width:38px; height:38px; border-radius:10px; border:1px solid #ddd; background:#fff;
+    font-size:18px; font-weight:700; cursor:pointer; }
+  .bigbtn { width:100%; background:#f5c518; color:#1a1a2e; border:none; border-radius:12px;
+    padding:14px; font-size:16px; font-weight:800; cursor:pointer; margin-top:14px; }
+  .closeX { float:left; background:#eee; border:none; width:34px; height:34px; border-radius:50%;
+    font-size:16px; cursor:pointer; }
+
+  /* السلة */
+  .cartrow { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid #eee; align-items:center; }
+  .cartrow img { width:56px; height:56px; border-radius:10px; object-fit:cover; background:#eee; }
+  .cartrow .cinfo { flex:1; font-size:14px; }
+  .cartrow .rm { background:none; border:none; color:#e74c3c; cursor:pointer; font-size:13px; }
+  .totals { margin-top:14px; font-size:15px; }
+  .totals div { display:flex; justify-content:space-between; padding:4px 0; }
+  .totals .grand { font-weight:800; font-size:17px; border-top:2px solid #1a1a2e; padding-top:8px; margin-top:6px; }
+
+  /* إتمام الطلب */
+  .field { margin-bottom:12px; }
+  .field label { font-weight:700; font-size:14px; display:block; margin-bottom:5px; }
+  .field input, .field select, .field textarea { width:100%; padding:11px; border:1px solid #ddd;
+    border-radius:10px; font-size:15px; background:#fff; }
+  .payopt { display:flex; gap:8px; }
+  .payopt label { flex:1; border:1px solid #ddd; border-radius:12px; padding:12px; text-align:center;
+    font-weight:700; font-size:14px; cursor:pointer; }
+  .payopt input { display:none; }
+  .payopt label.sel { border-color:#1a1a2e; background:#eef2ff; }
+  .vfbox { background:#fff5f5; border:1px solid #f5c6c6; border-radius:12px; padding:12px;
+    font-size:14px; margin-top:10px; display:none; line-height:1.9; }
+  .success { text-align:center; padding:30px 10px; }
+  .success .check { font-size:56px; }
+  .wbtn { display:inline-block; background:#25d366; color:#fff; border-radius:12px; padding:12px 20px;
+    text-decoration:none; font-weight:700; margin-top:12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">دكانة<span>.</span></div>
+  <button id="cartBtn">🛒 السلة <span id="cartCount">0</span></button>
+</header>
+
+<div id="cats"></div>
+<div id="grid"><div class="empty">جاري تحميل المنتجات…</div></div>
+
+<!-- نافذة المنتج -->
+<div class="overlay" id="pOverlay">
+  <div class="sheet">
+    <button class="closeX" onclick="closeOverlay('pOverlay')">✕</button>
+    <img id="pImg" alt="">
+    <h2 id="pName"></h2>
+    <div><span class="price" id="pPrice"></span><span class="old" id="pOld"></span></div>
+    <div class="desc" id="pDesc"></div>
+    <div class="optrow" id="sizeRow" style="display:none">
+      <label>المقاس</label><select id="pSize"></select>
+    </div>
+    <div class="optrow" id="colorRow" style="display:none">
+      <label>اللون</label><select id="pColor"></select>
+    </div>
+    <div class="optrow">
+      <label>الكمية</label>
+      <div class="qty">
+        <button onclick="chQty(1)">+</button><b id="pQty">1</b><button onclick="chQty(-1)">−</button>
+      </div>
+    </div>
+    <button class="bigbtn" onclick="addToCart()">أضف للسلة 🛒</button>
+  </div>
+</div>
+
+<!-- السلة -->
+<div class="overlay" id="cOverlay">
+  <div class="sheet">
+    <button class="closeX" onclick="closeOverlay('cOverlay')">✕</button>
+    <h2>🛒 سلة التسوق</h2>
+    <div id="cartItems"></div>
+    <div class="totals" id="cartTotals"></div>
+    <button class="bigbtn" id="checkoutBtn" onclick="openCheckout()">إتمام الطلب ✅</button>
+  </div>
+</div>
+
+<!-- إتمام الطلب -->
+<div class="overlay" id="oOverlay">
+  <div class="sheet" id="checkoutSheet">
+    <button class="closeX" onclick="closeOverlay('oOverlay')">✕</button>
+    <h2>📦 بيانات التوصيل</h2>
+    <div style="height:12px"></div>
+    <div class="field"><label>الاسم بالكامل</label><input id="fName" placeholder="مثال: محمد أحمد"></div>
+    <div class="field"><label>رقم الموبايل</label><input id="fPhone" inputmode="numeric" placeholder="01xxxxxxxxx"></div>
+    <div class="field"><label>المحافظة</label><select id="fGov"></select></div>
+    <div class="field"><label>العنوان بالتفصيل</label><textarea id="fAddr" rows="2" placeholder="الشارع، رقم العمارة، الدور، علامة مميزة"></textarea></div>
+    <div class="field"><label>طريقة الدفع</label>
+      <div class="payopt">
+        <label id="payCod" class="sel"><input type="radio" name="pay" value="cod" checked>💵 كاش عند الاستلام</label>
+        <label id="payVf"><input type="radio" name="pay" value="vodafone">📱 فودافون كاش</label>
+      </div>
+      <div class="vfbox" id="vfBox"></div>
+    </div>
+    <div class="field"><label>ملاحظات (اختياري)</label><input id="fNotes" placeholder="أي تفاصيل إضافية"></div>
+    <div class="totals" id="orderTotals"></div>
+    <button class="bigbtn" id="placeBtn" onclick="placeOrder()">تأكيد الطلب 🚀</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const GOVS = ["القاهرة","الجيزة","الإسكندرية","الدقهلية","الشرقية","الغربية","المنوفية","القليوبية","البحيرة","كفر الشيخ","دمياط","بورسعيد","الإسماعيلية","السويس","الفيوم","بني سويف","المنيا","أسيوط","سوهاج","قنا","الأقصر","أسوان","البحر الأحمر","مطروح","شمال سيناء","جنوب سيناء","الوادي الجديد"];
+let settings = { vodafoneNumber:"", whatsappNumber:"", deliveryFee:0 };
+let cats = [], products = [], cart = [];
+let cur = null, curQty = 1, curCat = "all";
+
+try { cart = JSON.parse(localStorage.getItem("dokkana_cart") || "[]"); } catch(e) { cart = []; }
+
+const eg = n => Number(n||0).toLocaleString("en-EG") + " ج.م";
+const $ = id => document.getElementById(id);
+
+// ---------- تحميل البيانات ----------
+async function loadAll() {
+  try { const s = await db.collection("settings").doc("store").get(); if (s.exists) settings = {...settings, ...s.data()}; } catch(e){}
+  const c = await db.collection("categories").where("active","==",true).get();
+  cats = c.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+  const p = await db.collection("products").where("active","==",true).get();
+  products = p.docs.map(d => ({id:d.id, ...d.data()}));
+  renderCats(); renderGrid(); renderCartCount();
+}
+
+function renderCats() {
+  $("cats").innerHTML = `<button class="chip ${curCat==='all'?'on':''}" onclick="pickCat('all')">الكل</button>` +
+    cats.map(c => `<button class="chip ${curCat===c.id?'on':''}" onclick="pickCat('${c.id}')">${c.name}</button>`).join("");
+}
+function pickCat(id){ curCat = id; renderCats(); renderGrid(); }
+
+function renderGrid() {
+  const list = curCat==="all" ? products : products.filter(p => p.categoryId===curCat);
+  if (!list.length) { $("grid").innerHTML = `<div class="empty">لا توجد منتجات هنا بعد — جرب قسمًا آخر 🙌</div>`; return; }
+  $("grid").innerHTML = list.map(p => `
+    <div class="card" onclick="openProduct('${p.id}')">
+      <img src="${(p.images&&p.images[0])||''}" alt="" onerror="this.src='';this.style.background='#eee'">
+      <div class="info">
+        <div class="name">${p.name}</div>
+        <div><span class="price">${eg(p.price)}</span>${p.oldPrice?`<span class="old">${eg(p.oldPrice)}</span>`:""}</div>
+        <button class="addbtn" onclick="event.stopPropagation();openProduct('${p.id}')">أضف للسلة</button>
+      </div>
+    </div>`).join("");
+}
+
+// ---------- نافذة المنتج ----------
+function openProduct(id) {
+  cur = products.find(p => p.id===id); if(!cur) return;
+  curQty = 1; $("pQty").textContent = 1;
+  $("pImg").src = (cur.images&&cur.images[0])||"";
+  $("pName").textContent = cur.name;
+  $("pPrice").textContent = eg(cur.price);
+  $("pOld").textContent = cur.oldPrice ? eg(cur.oldPrice) : "";
+  $("pDesc").textContent = cur.description || "";
+  if (cur.sizes && cur.sizes.length) { $("sizeRow").style.display="block"; $("pSize").innerHTML = cur.sizes.map(s=>`<option>${s}</option>`).join(""); }
+  else $("sizeRow").style.display="none";
+  if (cur.colors && cur.colors.length) { $("colorRow").style.display="block"; $("pColor").innerHTML = cur.colors.map(s=>`<option>${s}</option>`).join(""); }
+  else $("colorRow").style.display="none";
+  $("pOverlay").classList.add("show");
+}
+function chQty(d){ curQty = Math.max(1, curQty+d); $("pQty").textContent = curQty; }
+function addToCart() {
+  const size = $("sizeRow").style.display!=="none" ? $("pSize").value : "";
+  const color = $("colorRow").style.display!=="none" ? $("pColor").value : "";
+  const key = cur.id+"|"+size+"|"+color;
+  const found = cart.find(i => i.key===key);
+  if (found) found.qty += curQty;
+  else cart.push({key, id:cur.id, name:cur.name, price:cur.price, image:(cur.images&&cur.images[0])||"", size, color, qty:curQty});
+  saveCart(); closeOverlay("pOverlay"); openCart();
+}
+
+// ---------- السلة ----------
+function saveCart(){ localStorage.setItem("dokkana_cart", JSON.stringify(cart)); renderCartCount(); }
+function renderCartCount(){ $("cartCount").textContent = cart.reduce((a,i)=>a+i.qty,0); }
+function cartSubtotal(){ return cart.reduce((a,i)=>a+i.price*i.qty,0); }
+function openCart(){ renderCart(); $("cOverlay").classList.add("show"); }
+function renderCart() {
+  if (!cart.length) { $("cartItems").innerHTML = `<div class="empty">السلة فاضية 🛒</div>`; $("cartTotals").innerHTML=""; $("checkoutBtn").style.display="none"; return; }
+  $("checkoutBtn").style.display="block";
+  $("cartItems").innerHTML = cart.map((i,ix) => `
+    <div class="cartrow">
+      <img src="${i.image}" onerror="this.src=''">
+      <div class="cinfo"><b>${i.name}</b><br>${i.size?("مقاس: "+i.size+" "):""}${i.color?("لون: "+i.color):""}<br>
+        ${eg(i.price)} × ${i.qty}
+        <div class="qty" style="margin-top:4px">
+          <button onclick="cartQty(${ix},1)">+</button><b>${i.qty}</b><button onclick="cartQty(${ix},-1)">−</button>
+        </div>
+      </div>
+      <button class="rm" onclick="cartRm(${ix})">حذف ✕</button>
+    </div>`).join("");
+  $("cartTotals").innerHTML = totalsHtml();
+}
+function totalsHtml() {
+  const sub = cartSubtotal(), fee = Number(settings.deliveryFee||0);
+  return `<div><span>المنتجات</span><span>${eg(sub)}</span></div>
+    <div><span>الشحن</span><span>${fee?eg(fee):"يتحدد عند التأكيد"}</span></div>
+    <div class="grand"><span>الإجمالي</span><span>${eg(sub+fee)}</span></div>`;
+}
+function cartQty(ix,d){ cart[ix].qty = Math.max(1, cart[ix].qty+d); saveCart(); renderCart(); }
+function cartRm(ix){ cart.splice(ix,1); saveCart(); renderCart(); }
+
+// ---------- إتمام الطلب ----------
+function openCheckout() {
+  if (!cart.length) return;
+  closeOverlay("cOverlay");
+  $("fGov").innerHTML = GOVS.map(g=>`<option>${g}</option>`).join("");
+  $("orderTotals").innerHTML = totalsHtml();
+  updateVfBox();
+  $("oOverlay").classList.add("show");
+}
+function updateVfBox() {
+  const vf = document.querySelector('input[name=pay]:checked').value === "vodafone";
+  $("payCod").classList.toggle("sel", !vf);
+  $("payVf").classList.toggle("sel", vf);
+  $("vfBox").style.display = vf ? "block" : "none";
+  if (vf) $("vfBox").innerHTML = `📱 حوّل <b>${eg(cartSubtotal()+Number(settings.deliveryFee||0))}</b> على رقم فودافون كاش:<br>
+    <b style="font-size:18px">${settings.vodafoneNumber || "(سيظهر الرقم قريبًا)"}</b><br>
+    بعد التحويل هنكلمك على واتساب لتأكيد الطلب.`;
+}
+document.querySelectorAll('input[name=pay]').forEach(r => r.addEventListener("change", updateVfBox));
+
+async function placeOrder() {
+  const name = $("fName").value.trim(), phone = $("fPhone").value.trim(), addr = $("fAddr").value.trim();
+  if (!name) return alert("اكتب اسمك من فضلك");
+  if (!/^01[0-9]{9}$/.test(phone)) return alert("اكتب رقم موبايل مصري صحيح (11 رقم يبدأ بـ 01)");
+  if (!addr) return alert("اكتب العنوان بالتفصيل");
+  const btn = $("placeBtn"); btn.disabled = true; btn.textContent = "جاري إرسال الطلب…";
+  try {
+    const payment = document.querySelector('input[name=pay]:checked').value;
+    const order = {
+      items: cart.map(i => ({productId:i.id, name:i.name, price:i.price, qty:i.qty, size:i.size||"", color:i.color||""})),
+      subtotal: cartSubtotal(),
+      deliveryFee: Number(settings.deliveryFee||0),
+      total: cartSubtotal() + Number(settings.deliveryFee||0),
+      customer: { name, phone, governorate:$("fGov").value, address:addr, notes:$("fNotes").value.trim() },
+      payment, status: "new",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    const ref = await db.collection("orders").add(order);
+    const num = ref.id.slice(0,6).toUpperCase();
+    cart = []; saveCart();
+    $("checkoutSheet").innerHTML = `
+      <div class="success">
+        <div class="check">✅</div>
+        <h2>طلبك وصل يا ${name.split(" ")[0]}!</h2>
+        <p style="margin:10px 0">رقم الطلب: <b>#${num}</b><br>هنتواصل معك على ${phone} لتأكيد الطلب.</p>
+        ${settings.whatsappNumber ? `<a class="wbtn" href="https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent("أهلًا، أنا "+name+" — طلبي رقم #"+num)}" target="_blank">📲 تابع طلبك واتساب</a>` : ""}
+        <br><br><button class="bigbtn" onclick="location.reload()">كمّل تسوق 🛍️</button>
+      </div>`;
+  } catch(e) {
+    alert("حصل خطأ أثناء إرسال الطلب — جرب تاني");
+    btn.disabled = false; btn.textContent = "تأكيد الطلب 🚀";
+  }
+}
+
+function closeOverlay(id){ $(id).classList.remove("show"); }
+$("cartBtn").onclick = openCart;
+["pOverlay","cOverlay","oOverlay"].forEach(id =>
+  $(id).addEventListener("click", e => { if (e.target.id===id) closeOverlay(id); }));
+
+loadAll().catch(e => { $("grid").innerHTML = `<div class="empty">تعذر تحميل المنتجات — تأكد من الإنترنت وجرب تاني</div>`; });
+</script>
+</body>
+</html>

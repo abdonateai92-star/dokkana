@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم دكانة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; }
+  body { background:#f6f6f8; color:#1a1a2e; }
+  header { background:#1a1a2e; color:#fff; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:20px; }
+  header button { background:#e74c3c; color:#fff; border:none; border-radius:10px; padding:7px 14px; font-weight:700; cursor:pointer; }
+  #tabs { display:flex; gap:6px; padding:12px 16px; background:#fff; overflow-x:auto; }
+  .tab { border:1px solid #ddd; background:#fff; border-radius:20px; padding:7px 16px; font-weight:700;
+    font-size:14px; cursor:pointer; white-space:nowrap; }
+  .tab.on { background:#1a1a2e; color:#fff; }
+  #main { padding:16px; max-width:900px; margin:auto; }
+  .card { background:#fff; border-radius:14px; padding:16px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .field { margin-bottom:10px; }
+  .field label { font-weight:700; font-size:13px; display:block; margin-bottom:4px; }
+  .field input, .field select, .field textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:10px; font-size:14px; }
+  .btn { background:#1a1a2e; color:#fff; border:none; border-radius:10px; padding:11px 20px; font-weight:700; cursor:pointer; font-size:14px; }
+  .btn.gold { background:#f5c518; color:#1a1a2e; }
+  .btn.red { background:#e74c3c; padding:7px 12px; font-size:13px; }
+  .btn.gray { background:#eee; color:#333; padding:7px 12px; font-size:13px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .badge { border-radius:12px; padding:3px 10px; font-size:12px; font-weight:700; }
+  .b-new { background:#fff3cd; color:#856404; } .b-confirmed { background:#d1ecf1; color:#0c5460; }
+  .b-shipped { background:#cce5ff; color:#004085; } .b-delivered { background:#d4edda; color:#155724; }
+  .b-canceled { background:#f8d7da; color:#721c24; }
+  .item { border-bottom:1px solid #eee; padding:10px 0; display:flex; justify-content:space-between; gap:10px; align-items:center; }
+  .item:last-child { border-bottom:none; }
+  .muted { color:#888; font-size:13px; }
+  .empty { text-align:center; padding:40px; color:#888; }
+  #loginBox { max-width:380px; margin:80px auto; }
+  h3 { margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<div id="loginBox" class="card">
+  <h3>👑 دخول الأدمن</h3>
+  <div class="field"><label>الإيميل</label><input id="lEmail" type="email"></div>
+  <div class="field"><label>كلمة السر</label><input id="lPass" type="password"></div>
+  <button class="btn" style="width:100%" onclick="login()">دخول</button>
+  <p class="muted" id="lErr" style="color:#e74c3c; margin-top:8px"></p>
+</div>
+
+<div id="panel" style="display:none">
+  <header>
+    <h1>👑 لوحة تحكم دكانة</h1>
+    <button onclick="logout()">خروج</button>
+  </header>
+  <div id="tabs">
+    <button class="tab on" data-t="orders" onclick="showTab('orders')">📦 الطلبات <span id="ordBadge"></span></button>
+    <button class="tab" data-t="products" onclick="showTab('products')">🛍️ المنتجات</button>
+    <button class="tab" data-t="cats" onclick="showTab('cats')">🗂️ الأقسام</button>
+    <button class="tab" data-t="settings" onclick="showTab('settings')">⚙️ الإعدادات</button>
+  </div>
+  <div id="main"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth(), db = firebase.firestore();
+const $ = id => document.getElementById(id);
+const eg = n => Number(n||0).toLocaleString("en-EG") + " ج.م";
+const STATUS = { new:"جديد", confirmed:"مؤكد", shipped:"اتشحن", delivered:"اتسلم", canceled:"ملغي" };
+let curTab = "orders", editId = null, catsCache = [];
+
+auth.onAuthStateChanged(u => {
+  if (u && u.email === ADMIN_EMAIL) { $("loginBox").style.display="none"; $("panel").style.display="block"; showTab("orders"); }
+  else if (u) { auth.signOut(); $("lErr").textContent = "الحساب ده مش أدمن"; }
+});
+function login(){ auth.signInWithEmailAndPassword($("lEmail").value.trim(), $("lPass").value)
+  .catch(e => $("lErr").textContent = "بيانات الدخول غلط"); }
+function logout(){ auth.signOut(); location.reload(); }
+
+function showTab(t){
+  curTab = t;
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("on", b.dataset.t===t));
+  ({orders:renderOrders, products:renderProducts, cats:renderCats, settings:renderSettings})[t]();
+}
+
+// ============ الطلبات ============
+async function renderOrders(){
+  $("main").innerHTML = `<div class="empty">جاري التحميل…</div>`;
+  const s = await db.collection("orders").orderBy("createdAt","desc").limit(100).get();
+  const orders = s.docs.map(d => ({id:d.id, ...d.data()}));
+  const newCount = orders.filter(o=>o.status==="new").length;
+  $("ordBadge").textContent = newCount ? `(${newCount})` : "";
+  if (!orders.length) { $("main").innerHTML = `<div class="empty">لا توجد طلبات بعد 📦</div>`; return; }
+  $("main").innerHTML = orders.map(o => `
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <b>#${o.id.slice(0,6).toUpperCase()} — ${o.customer.name}</b>
+        <span class="badge b-${o.status}">${STATUS[o.status]||o.status}</span>
+      </div>
+      <p class="muted">📞 ${o.customer.phone} — ${o.customer.governorate} — ${o.customer.address}
+        ${o.customer.notes?("<br>📝 "+o.customer.notes):""}<br>
+        💳 ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"} — ${o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleString("ar-EG"):""}</p>
+      <div style="margin:8px 0">${o.items.map(i=>`<div class="muted">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""} — ${eg(i.price*i.qty)}</div>`).join("")}</div>
+      <b>الإجمالي: ${eg(o.total)}</b> <span class="muted">(شحن: ${eg(o.deliveryFee)})</span>
+      <div class="row" style="margin-top:10px">
+        <select onchange="setStatus('${o.id}', this.value)">
+          ${Object.keys(STATUS).map(k=>`<option value="${k}" ${o.status===k?"selected":""}>${STATUS[k]}</option>`).join("")}
+        </select>
+        <a class="btn gray" style="text-decoration:none" target="_blank" href="https://wa.me/2${o.customer.phone}">📲 واتساب العميل</a>
+        <button class="btn red" onclick="delOrder('${o.id}')">حذف</button>
+      </div>
+    </div>`).join("");
+}
+async function setStatus(id, st){ await db.collection("orders").doc(id).update({status:st}); renderOrders(); }
+async function delOrder(id){ if(confirm("حذف الطلب نهائيًا؟")) { await db.collection("orders").doc(id).delete(); renderOrders(); } }
+
+// ============ المنتجات ============
+async function renderProducts(){
+  const c = await db.collection("categories").get();
+  catsCache = c.docs.map(d=>({id:d.id, ...d.data()}));
+  const s = await db.collection("products").orderBy("createdAt","desc").get();
+  const prods = s.docs.map(d=>({id:d.id, ...d.data()}));
+  $("main").innerHTML = `
+    <div class="card">
+      <h3>${editId ? "✏️ تعديل منتج" : "➕ إضافة منتج"}</h3>
+      <div class="field"><label>اسم المنتج</label><input id="prName"></div>
+      <div class="row">
+        <div class="field" style="flex:1"><label>السعر (ج.م)</label><input id="prPrice" type="number" min="0"></div>
+        <div class="field" style="flex:1"><label>سعر قبل الخصم (اختياري)</label><input id="prOld" type="number" min="0"></div>
+      </div>
+      <div class="field"><label>القسم</label><select id="prCat">${catsCache.map(c=>`<option value="${c.id}">${c.name}</option>`).join("")}</select></div>
+      <div class="field"><label>الوصف</label><textarea id="prDesc" rows="2"></textarea></div>
+      <div class="field"><label>روابط الصور (افصل بينها بفاصلة ,)</label><textarea id="prImgs" rows="2" placeholder="https://...jpg , https://...jpg"></textarea></div>
+      <div class="row">
+        <div class="field" style="flex:1"><label>المقاسات (فاصلة ,) اختياري</label><input id="prSizes" placeholder="S, M, L, XL"></div>
+        <div class="field" style="flex:1"><label>الألوان (فاصلة ,) اختياري</label><input id="prColors" placeholder="أسود, أبيض"></div>
+      </div>
+      <div class="field"><label><input type="checkbox" id="prActive" checked style="width:auto"> ظاهر في المتجر</label></div>
+      <button class="btn gold" onclick="saveProduct()">${editId?"حفظ التعديل":"إضافة المنتج"}</button>
+      ${editId?`<button class="btn gray" onclick="editId=null;renderProducts()">إلغاء</button>`:""}
+    </div>
+    <div class="card"><h3>المنتجات (${prods.length})</h3>
+      ${prods.length ? prods.map(p=>`
+        <div class="item">
+          <div><b>${p.name}</b> <span class="muted">${p.active===false?"(مخفي)":""}</span><br>
+            <span class="muted">${catName(p.categoryId)} — ${eg(p.price)}</span></div>
+          <div class="row">
+            <button class="btn gray" onclick='startEdit(${JSON.stringify(p).replace(/'/g,"&#39;")})'>تعديل</button>
+            <button class="btn red" onclick="delProduct('${p.id}')">حذف</button>
+          </div>
+        </div>`).join("") : `<div class="empty">لسه مفيش منتجات — أضف أول منتج من فوق</div>`}
+    </div>`;
+}
+function catName(id){ const c = catsCache.find(x=>x.id===id); return c ? c.name : "—"; }
+function startEdit(p){
+  editId = p.id;
+  renderProducts().then(() => {
+    $("prName").value = p.name||""; $("prPrice").value = p.price||""; $("prOld").value = p.oldPrice||"";
+    $("prCat").value = p.categoryId||""; $("prDesc").value = p.description||"";
+    $("prImgs").value = (p.images||[]).join(", "); $("prSizes").value = (p.sizes||[]).join(", ");
+    $("prColors").value = (p.colors||[]).join(", "); $("prActive").checked = p.active!==false;
+    window.scrollTo(0,0);
+  });
+}
+const split = v => v.split(",").map(x=>x.trim()).filter(Boolean);
+async function saveProduct(){
+  const data = {
+    name: $("prName").value.trim(), price: Number($("prPrice").value||0),
+    oldPrice: Number($("prOld").value||0) || null, categoryId: $("prCat").value,
+    description: $("prDesc").value.trim(), images: split($("prImgs").value),
+    sizes: split($("prSizes").value), colors: split($("prColors").value),
+    active: $("prActive").checked
+  };
+  if (!data.name || !data.price) return alert("اكتب اسم المنتج وسعره على الأقل");
+  if (editId) await db.collection("products").doc(editId).update(data);
+  else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); await db.collection("products").add(data); }
+  editId = null; renderProducts();
+}
+async function delProduct(id){ if(confirm("حذف المنتج نهائيًا؟")) { await db.collection("products").doc(id).delete(); renderProducts(); } }
+
+// ============ الأقسام ============
+async function renderCats(){
+  const s = await db.collection("categories").get();
+  const cats = s.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
+  $("main").innerHTML = `
+    <div class="card">
+      <h3>➕ إضافة قسم</h3>
+      <div class="row">
+        <div class="field" style="flex:2"><label>اسم القسم</label><input id="cName" placeholder="مثال: ملابس رجالي"></div>
+        <div class="field" style="flex:1"><label>الترتيب</label><input id="cOrder" type="number" value="${cats.length+1}"></div>
+      </div>
+      <button class="btn gold" onclick="saveCat()">إضافة القسم</button>
+    </div>
+    <div class="card"><h3>الأقسام (${cats.length})</h3>
+      ${cats.length ? cats.map(c=>`
+        <div class="item">
+          <div><b>${c.name}</b> <span class="muted">ترتيب: ${c.order||0} ${c.active===false?"— (مخفي)":""}</span></div>
+          <div class="row">
+            <button class="btn gray" onclick="toggleCat('${c.id}', ${c.active!==false})">${c.active!==false?"إخفاء":"إظهار"}</button>
+            <button class="btn red" onclick="delCat('${c.id}')">حذف</button>
+          </div>
+        </div>`).join("") : `<div class="empty">أضف أول قسم (مثال: ملابس رجالي، ملابس حريمي، إكسسوارات، إلكترونيات)</div>`}
+    </div>`;
+}
+async function saveCat(){
+  const name = $("cName").value.trim(); if(!name) return alert("اكتب اسم القسم");
+  await db.collection("categories").add({name, order:Number($("cOrder").value||0), active:true});
+  renderCats();
+}
+async function toggleCat(id, cur){ await db.collection("categories").doc(id).update({active:!cur}); renderCats(); }
+async function delCat(id){ if(confirm("حذف القسم؟ (المنتجات اللي فيه هتفضل بس من غير قسم)")) { await db.collection("categories").doc(id).delete(); renderCats(); } }
+
+// ============ الإعدادات ============
+async function renderSettings(){
+  const s = await db.collection("settings").doc("store").get();
+  const st = s.exists ? s.data() : {};
+  $("main").innerHTML = `
+    <div class="card">
+      <h3>⚙️ إعدادات المتجر</h3>
+      <div class="field"><label>رقم فودافون كاش (لاستلام التحويلات)</label><input id="sVf" inputmode="numeric" placeholder="01xxxxxxxxx" value="${st.vodafoneNumber||""}"></div>
+      <div class="field"><label>رقم واتساب خدمة العملاء (بالكود الدولي بدون +، مثال: 2010xxxxxxxx)</label><input id="sWa" inputmode="numeric" placeholder="2010xxxxxxxx" value="${st.whatsappNumber||""}"></div>
+      <div class="field"><label>مصاريف الشحن الثابتة (ج.م) — 0 يعني تتحدد عند التأكيد</label><input id="sFee" type="number" min="0" value="${st.deliveryFee||0}"></div>
+      <button class="btn gold" onclick="saveSettings()">حفظ الإعدادات</button>
+    </div>`;
+}
+async function saveSettings(){
+  await db.collection("settings").doc("store").set({
+    vodafoneNumber: $("sVf").value.trim(),
+    whatsappNumber: $("sWa").value.trim(),
+    deliveryFee: Number($("sFee").value||0)
+  }, {merge:true});
+  alert("تم الحفظ ✅");
+}
+</script>
+</body>
+</html>
