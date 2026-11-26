@@ -808,15 +808,14 @@ async function placeOrder(){
     // تخفيض المخزون (أفضل جهد — الأدمن يراجع عند التأكيد)
     for (const op of st.ops) { try { await db.collection("products").doc(op.id).update({stock: op.to}); } catch(e){} }
     cart = []; saveCart();
-    const summary = order.items.map(i=>"• "+i.name+" ×"+i.qty).join("\n");
-    const waText = encodeURIComponent(`طلب جديد من دكانة 🛍️\nالكود: ${code}\nالاسم: ${name}\n${summary}\nالإجمالي: ${C.eg(order.total)}\nالدفع: ${payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}`);
+    const waLink = C.orderWhatsAppLink(settings.whatsappNumber, order, code);
     $("checkoutSheet").innerHTML = `
       <div class="success">
         <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M4 12.5 9.5 18 20 6.5"/></svg></div>
         <h2>طلبك وصل يا ${name.split(" ")[0]}!</h2>
         <p style="margin-top:8px;color:var(--mut)">احتفظ بكود الطلب عشان تتبعه من "تتبع طلبك" تحت</p>
         <div class="ordercode">${code}</div>
-        ${settings.whatsappNumber ? `<a class="wbtn" href="https://wa.me/${settings.whatsappNumber}?text=${waText}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline;vertical-align:-2px"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg> ابعت طلبك على واتساب لتأكيد أسرع</a>` : ""}
+        ${waLink ? `<a class="wbtn" href="${waLink}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline;vertical-align:-2px"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg> ابعت طلبك على واتساب لتأكيد أسرع</a>` : ""}
         <p style="margin-top:12px;font-size:13.5px;color:var(--mut)">هنتواصل معك على <b>${phone}</b> لتأكيد الطلب قبل الشحن.</p>
         <button class="bigbtn" onclick="location.hash='';location.reload()">كمّل تسوق</button>
       </div>`;
@@ -856,6 +855,7 @@ async function trackOrder(){
           ${o.items.map(i=>`<div style="font-size:13.5px;padding:3px 0">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""}</div>`).join("")}
           <div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px;font-weight:800">الإجمالي: ${C.eg(o.total)} — ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}</div>
         </div>
+        ${settings.whatsappNumber?`<a class="wbtn" href="${C.orderWhatsAppLink(settings.whatsappNumber, o, code)}" target="_blank" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline;vertical-align:-2px"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg> ابعت الطلب على واتساب</a>`:""}
       </div>`;
   } catch(e){ $("trackResult").innerHTML = `<div class="empty">حصل خطأ — جرب تاني</div>`; }
 }
