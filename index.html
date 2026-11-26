@@ -264,6 +264,31 @@ nav a{ transition:color .2s ease; }
 .frow a{ color:#fff; font-weight:800; text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.4); }
 .frow b{ color:#fff; }
 .fcopy{ margin-top:14px; font-size:12px; opacity:.5; text-align:center; }
+
+/* ---------- v5 ---------- */
+.off-pill{ background:var(--red); color:#fff; font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:10px; margin-inline-start:6px; }
+.imgcount{ position:absolute; top:10px; inset-inline-end:10px; background:rgba(14,42,35,.65); color:#fff; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:12px; z-index:2; direction:ltr; }
+.ptrust{ display:flex; gap:8px; margin:12px 0 4px; }
+.ptrust div{ flex:1; background:var(--amber-soft); border-radius:12px; padding:8px 4px; text-align:center; font-size:11px; font-weight:700; color:var(--pine); }
+.ptrust svg{ width:18px; height:18px; display:block; margin:0 auto 4px; }
+.oitems{ background:#f7f8fc; border-radius:14px; padding:10px 12px; margin-bottom:14px; max-height:150px; overflow:auto; }
+.oitems .oi{ display:flex; align-items:center; gap:10px; padding:5px 0; font-size:13px; }
+.oitems img{ width:38px; height:38px; border-radius:9px; object-fit:cover; flex:none; }
+.oitems .q{ margin-inline-start:auto; font-weight:800; color:var(--pine); white-space:nowrap; }
+.reassure{ text-align:center; font-size:12px; color:#8a8fa5; margin-top:10px; }
+.trust{ display:flex; gap:10px; margin:22px 12px 0; }
+.trust div{ flex:1; background:#fff; border-radius:16px; padding:14px 6px; text-align:center; font-size:12px; font-weight:800; color:var(--pine); box-shadow:var(--shadow); }
+.trust svg{ width:22px; height:22px; display:block; margin:0 auto 6px; }
+.trust a{ color:inherit; text-decoration:none; }
+.courierbox{ display:flex; align-items:center; gap:10px; background:var(--amber-soft); border:1px solid #f3e3bd; border-radius:14px; padding:12px 14px; margin-top:12px; font-size:13.5px; }
+.courierbox svg{ width:20px; height:20px; flex:none; }
+.courierbox b{ color:var(--pine); }
+.price, .old, .low{ font-variant-numeric:tabular-nums; }
+.ordercode{ direction:ltr; }
+nav{ padding-bottom:env(safe-area-inset-bottom); }
+body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
+.sheet{ overscroll-behavior:contain; }
+.clearsearch{ display:block; margin:14px auto 0; background:#fff; border:1.5px solid var(--pine); color:var(--pine); border-radius:12px; padding:9px 22px; font-weight:800; font-size:13.5px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -305,11 +330,17 @@ nav a{ transition:color .2s ease; }
     <button class="closeX" onclick="closeProduct()">✕</button>
     <div class="gallery">
       <div class="track" id="pTrack"></div>
+      <span class="imgcount" id="pCount"></span>
       <div class="dots" id="pDots"></div>
     </div>
     <h2 id="pName" style="margin-top:12px"></h2>
-    <div><span class="price" id="pPrice"></span><span class="old" id="pOld"></span> <span class="low" id="pLow"></span></div>
+    <div><span class="price" id="pPrice"></span><span class="old" id="pOld"></span> <span class="low" id="pLow"></span><span class="off-pill" id="pOff" style="display:none"></span></div>
     <div class="desc" id="pDesc"></div>
+    <div class="ptrust">
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>كاش عند الاستلام</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6Z"/><path d="M9 11.5l2 2 4-4"/></svg>طلبك مضمون</div>
+    </div>
     <div class="optrow" id="sizeRow" style="display:none"><label>المقاس</label><div class="opts" id="pSizes"></div></div>
     <div class="optrow" id="colorRow" style="display:none"><label>اللون</label><div class="opts" id="pColors"></div></div>
     <div class="optrow"><label>الكمية</label>
@@ -337,10 +368,10 @@ nav a{ transition:color .2s ease; }
     <button class="closeX" onclick="closeOverlay('oOverlay')">✕</button>
     <h2>بيانات التوصيل</h2>
     <div style="height:14px"></div>
-    <div class="field"><label>الاسم بالكامل</label><input id="fName" placeholder="مثال: محمد أحمد"></div>
-    <div class="field"><label>رقم الموبايل</label><input id="fPhone" inputmode="numeric" maxlength="11" placeholder="01xxxxxxxxx"></div>
+    <div class="field"><label>الاسم بالكامل</label><input id="fName" autocomplete="name" placeholder="مثال: محمد أحمد"></div>
+    <div class="field"><label>رقم الموبايل</label><input id="fPhone" inputmode="numeric" maxlength="11" autocomplete="tel" placeholder="01xxxxxxxxx"></div>
     <div class="field"><label>المحافظة</label><select id="fGov" onchange="renderOrderTotals()"></select></div>
-    <div class="field"><label>العنوان بالتفصيل</label><textarea id="fAddr" rows="2" placeholder="الشارع، رقم العمارة، الدور، علامة مميزة"></textarea></div>
+    <div class="field"><label>العنوان بالتفصيل</label><textarea id="fAddr" rows="2" autocomplete="street-address" placeholder="الشارع، رقم العمارة، الدور، علامة مميزة"></textarea></div>
     <div class="field"><label>كود الخصم (لو عندك)</label>
       <div class="promorow"><input id="fPromo" placeholder="مثال: SALE10" style="text-transform:uppercase"><button onclick="applyPromo()">تطبيق</button></div>
       <div id="promoMsg"></div>
@@ -353,8 +384,10 @@ nav a{ transition:color .2s ease; }
       <div class="vfbox" id="vfBox"></div>
     </div>
     <div class="field"><label>ملاحظات (اختياري)</label><input id="fNotes" placeholder="أي تفاصيل إضافية"></div>
+    <div class="oitems" id="orderItems"></div>
     <div class="totals" id="orderTotals"></div>
     <button class="bigbtn" id="placeBtn" onclick="placeOrder()">تأكيد الطلب</button>
+    <div class="reassure">بياناتك بتتستخدم لتجهيز وتوصيل طلبك بس</div>
   </div>
 </div>
 
@@ -372,6 +405,8 @@ nav a{ transition:color .2s ease; }
     <div id="trackResult"></div>
   </div>
 </div>
+
+<div class="trust" id="trust"></div>
 
 <footer id="foot"></footer>
 
@@ -408,7 +443,7 @@ const XSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#d64541" stroke-width
 
 /* ---------- الحالة ---------- */
 const CACHE_KEY = "dokkana_cache_v2", CART_KEY = "dokkana_cart", CACHE_TTL = 5*60*1000;
-let settings = { vodafoneNumber:"", whatsappNumber:"", announcement:"", fees:{default:0, govs:{}} };
+let settings = { vodafoneNumber:"", whatsappNumber:"", announcement:"", courierName:"", fees:{default:0, govs:{}} };
 let cats = [], products = [], cart = [];
 let state = { cat:"all", sort:"new", q:"" };
 let cur = null, curQty = 1, selSize = "", selColor = "";
@@ -500,6 +535,11 @@ function renderHero(){
 }
 function renderFooter(){
   const el = $("foot"); if (!el) return;
+  const tr = $("trust");
+  if (tr) tr.innerHTML = `
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6Z"/><path d="M9 11.5l2 2 4-4"/></svg>دفع آمن</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>${settings.whatsappNumber?`<a href="https://wa.me/${settings.whatsappNumber}" target="_blank" rel="noopener">خدمة عملاء واتساب</a>`:"خدمة عملاء واتساب"}</div>`;
   const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>';
   const PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>';
   const TRUCK = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>';
@@ -514,6 +554,7 @@ function renderFooter(){
     ${vf}${wa}
     <div class="fcopy">دكانة © 2026 — كل الحقوق محفوظة</div>`;
 }
+function clearSearch(){ const s = $("search"); if (s) s.value = ""; state.q = ""; renderGrid(); }
 function quickAdd(id){
   const p = products.find(x=>x.id===id); if (!p || outOfStock(p)) return;
   if ((p.sizes && p.sizes.length) || (p.colors && p.colors.length)){ openProduct(id); return; }
@@ -528,7 +569,7 @@ function hcard(p){
   const out = outOfStock(p);
   const isNew = p.createdAt && p.createdAt.seconds && (Date.now()/1000 - p.createdAt.seconds) < 3*86400;
   return `<div class="hcard" onclick="openProduct('${p.id}')">
-    <div class="imgw"><img loading="lazy" src="${firstImg(p)}" alt="" onerror="this.style.visibility='hidden'">
+    <div class="imgw"><img loading="lazy" decoding="async" src="${firstImg(p)}" alt="" onerror="this.style.visibility='hidden'">
       ${off?`<span class="badge-off">خصم ${off}%</span>`:""}${isNew?`<span class="badge-new">جديد</span>`:""}${out?`<div class="badge-out">نفدت الكمية</div>`:""}</div>
     <div class="info"><div class="name">${p.name}</div>
       <div class="pr"><span class="price" style="font-size:15px">${C.eg(p.price)}</span>${p.oldPrice&&p.oldPrice>p.price?`<span class="old">${C.eg(p.oldPrice)}</span>`:""}</div>
@@ -553,7 +594,7 @@ function renderGrid(){
     if (!products.length && !state.q && state.cat==="all")
       $("grid").innerHTML = `<div class="empty">${BAG}<b style="display:block;font-size:18px;font-weight:900;color:var(--ink)">المتجر بيتجهز!</b>المنتجات جاية في الطريق — ارجع لنا قريب</div>`;
     else
-      $("grid").innerHTML = `<div class="empty">${BAG}مفيش منتجات مطابقة — جرّب بحث تاني أو قسم مختلف</div>`;
+      $("grid").innerHTML = `<div class="empty">${BAG}مفيش منتجات مطابقة — جرّب بحث تاني أو قسم مختلف${state.q?`<button class="clearsearch" onclick="clearSearch()">امسح البحث</button>`:""}</div>`;
     return;
   }
   $("grid").innerHTML = list.map(p => {
@@ -562,7 +603,7 @@ function renderGrid(){
     const low = !out && p.stock !== null && p.stock !== undefined && p.stock !== "" && Number(p.stock) <= 3 ? `باقي ${p.stock} بس!` : "";
     const isNew = p.createdAt && p.createdAt.seconds && (Date.now()/1000 - p.createdAt.seconds) < 3*86400;
     return `<div class="card" onclick="openProduct('${p.id}')">
-      <div class="imgw"><img loading="lazy" src="${firstImg(p)}" alt="" onerror="this.style.visibility='hidden'">
+      <div class="imgw"><img loading="lazy" decoding="async" src="${firstImg(p)}" alt="" onerror="this.style.visibility='hidden'">
         ${off?`<span class="badge-off">خصم ${off}%</span>`:""}${isNew?`<span class="badge-new">جديد</span>`:""}${out?`<div class="badge-out">نفدت الكمية</div>`:""}</div>
       <div class="info">
         <div class="name">${p.name}</div>
@@ -582,16 +623,22 @@ function openProduct(id){
   curQty = 1; $("pQty").textContent = 1;
   selSize = (cur.sizes&&cur.sizes[0])||""; selColor = (cur.colors&&cur.colors[0])||"";
   const imgs = (cur.images&&cur.images.length?cur.images:[""]);
-  $("pTrack").innerHTML = imgs.map(s=>`<img src="${s}" onerror="this.style.visibility='hidden'">`).join("");
+  $("pTrack").innerHTML = imgs.map(s=>`<img src="${s}" decoding="async" onerror="this.style.visibility='hidden'">`).join("");
   $("pDots").innerHTML = imgs.length>1 ? imgs.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join("") : "";
+  $("pCount").style.display = imgs.length>1 ? "" : "none";
+  $("pCount").textContent = "1/" + imgs.length;
   $("pTrack").onscroll = e => {
-    const i = Math.round(e.target.scrollLeft / e.target.clientWidth);
+    const i = Math.abs(Math.round(e.target.scrollLeft / e.target.clientWidth));
     document.querySelectorAll("#pDots i").forEach((d,j)=>d.classList.toggle("on", j===i));
+    $("pCount").textContent = (i+1) + "/" + imgs.length;
   };
   $("pTrack").scrollLeft = 0;
   $("pName").textContent = cur.name;
   $("pPrice").textContent = C.eg(cur.price);
   $("pOld").textContent = cur.oldPrice && cur.oldPrice>cur.price ? C.eg(cur.oldPrice) : "";
+  const offPct = cur.oldPrice && cur.oldPrice > cur.price ? Math.round((1-cur.price/cur.oldPrice)*100) : 0;
+  $("pOff").style.display = offPct ? "" : "none";
+  if (offPct) $("pOff").textContent = `خصم ${offPct}%`;
   $("pDesc").textContent = cur.description || "";
   const out = outOfStock(cur);
   $("pLow").textContent = out ? "" : (cur.stock!==null&&cur.stock!==undefined&&cur.stock!==""&&Number(cur.stock)<=3 ? `باقي ${cur.stock} بس!` : "");
@@ -630,7 +677,7 @@ function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); rende
 function renderCartCount(){ const n = cart.reduce((a,i)=>a+i.qty,0); $("cartCount").textContent = n; $("cartCount").style.display = n ? "" : "none"; }
 function openCart(){ renderCart(); $("cOverlay").classList.add("show"); }
 function renderCart(){
-  if (!cart.length){ $("cartItems").innerHTML = `<div class="empty"><span class="e">${BAGSVG}</span>السلة فاضية — ابدأ التسوق!</div>`; $("cartTotals").innerHTML=""; $("checkoutBtn").style.display="none"; return; }
+  if (!cart.length){ $("cartItems").innerHTML = `<div class="empty"><span class="e">${BAGSVG}</span>السلة فاضية — ابدأ التسوق!<button class="clearsearch" onclick="closeOverlay('cOverlay')">تصفح المنتجات</button></div>`; $("cartTotals").innerHTML=""; $("checkoutBtn").style.display="none"; return; }
   $("checkoutBtn").style.display="block";
   $("cartItems").innerHTML = cart.map((i,ix)=>`
     <div class="cartrow">
@@ -654,6 +701,7 @@ function openCheckout(){
   if (!cart.length) return;
   closeOverlay("cOverlay");
   $("fGov").innerHTML = C.GOVS.map(g=>`<option>${g}</option>`).join("");
+  $("orderItems").innerHTML = cart.map(i=>`<div class="oi"><img src="${i.image}" alt=""><span>${i.name}${i.size?(" ("+i.size+")"):""}${i.color?(" ["+i.color+"]"):""}</span><span class="q">×${i.qty} — ${C.eg(i.price*i.qty)}</span></div>`).join("");
   appliedCode=""; appliedPromo=null; $("fPromo").value=""; $("promoMsg").textContent="";
   renderOrderTotals(); updateVfBox();
   $("oOverlay").classList.add("show");
@@ -665,6 +713,7 @@ function renderOrderTotals(){
     ${t.discount?`<div class="disc"><span>خصم (${appliedCode})</span><span>− ${C.eg(t.discount)}</span></div>`:""}
     <div><span>الشحن (${$("fGov").value})</span><span>${t.fee?C.eg(t.fee):"مجانًا"}</span></div>
     <div class="grand"><span>الإجمالي</span><span>${C.eg(t.total)}</span></div>`;
+  $("placeBtn").textContent = "تأكيد الطلب • " + C.eg(t.total);
   updateVfBox();
 }
 async function applyPromo(){
@@ -740,7 +789,7 @@ async function placeOrder(){
       </div>`;
   } catch(e) {
     toast("حصل خطأ أثناء إرسال الطلب — جرب تاني");
-    btn.disabled=false; btn.textContent="تأكيد الطلب";
+    btn.disabled=false; renderOrderTotals();
   }
 }
 
@@ -758,7 +807,7 @@ async function trackOrder(){
     }
     const o = snap.data();
     const steps = [["new","اتقدم"],["confirmed","اتأكد"],["shipped","اتشحن"],["delivered","اتسلم"]];
-    let idx = steps.findIndex(s=>s[0]===o.status); if (idx<0) idx=0;
+    let idx = steps.findIndex(s=>s[0]===o.status); if (o.status==="courier") idx=2; if (idx<0) idx=0;
     const canceled = o.status==="canceled";
     $("trackResult").innerHTML = canceled ? `
       <div class="empty"><span class="e">${XSVG}</span>الطلب ${code} اتلغى — لو عندك استفسار كلمنا</div>` : `
@@ -769,6 +818,7 @@ async function trackOrder(){
         <div class="statusline">
           ${steps.map((s,i)=>`<div class="st ${i<idx?'done':i===idx?'now done':''}"><i>${i<idx?'✓':i+1}</i>${s[1]}</div>`).join("")}
         </div>
+        ${(o.status==="courier"||o.status==="shipped")&&(o.trackingNumber||settings.courierName)?`<div class="courierbox"><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg><div>${settings.courierName?`<div>شركة الشحن: <b>${settings.courierName}</b></div>`:""}${o.trackingNumber?`<div>رقم التتبع: <b dir="ltr">${o.trackingNumber}</b></div>`:""}</div></div>`:""}
         <div style="background:#f7f8fc;border-radius:16px;padding:14px;margin-top:14px">
           ${o.items.map(i=>`<div style="font-size:13.5px;padding:3px 0">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""}</div>`).join("")}
           <div style="border-top:1px solid #e8eaf3;margin-top:10px;padding-top:10px;font-weight:800">الإجمالي: ${C.eg(o.total)} — ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}</div>
