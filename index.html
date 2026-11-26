@@ -5,20 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>دكانة — تسوق أونلاين في مصر | ملابس وإكسسوارات وإلكترونيات</title>
 <meta name="description" content="دكانة: متجر مصري أونلاين — ملابس رجالي وحريمي، إكسسوارات، وإلكترونيات. الدفع كاش عند الاستلام أو فودافون كاش، وتوصيل لكل المحافظات.">
-<meta name="theme-color" content="#0e2a23">
+<meta name="theme-color" content="#0b2e59">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12283f">
 <meta property="og:type" content="website">
 <meta property="og:title" content="دكانة — تسوق أونلاين في مصر">
 <meta property="og:description" content="ملابس وإكسسوارات وإلكترونيات — كاش عند الاستلام أو فودافون كاش، توصيل لكل المحافظات.">
 <meta property="og:url" content="https://abdonateai92-star.github.io/dokkana/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230e2a23'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23f5b53f' font-family='sans-serif' font-weight='bold'%3E%D8%AF%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20140%20140'%3E%3Crect%20x='6'%20y='6'%20width='128'%20height='128'%20rx='36'%20fill='%23f2a619'/%3E%3Crect%20x='17'%20y='17'%20width='106'%20height='106'%20rx='27'%20fill='none'%20stroke='%230b2e59'%20stroke-width='7'/%3E%3Cg%20transform='translate(23,27)%20scale(0.72)'%3E%3Cpath%20d='M114%2014%20L100%2030%20C68%2012%2026%2034%2026%2066%20C26%2092%2058%20102%20104%2096'%20stroke='%230b2e59'%20stroke-width='21'%20stroke-linecap='round'%20stroke-linejoin='round'%20fill='none'/%3E%3Ccircle%20cx='66'%20cy='56'%20r='14'%20fill='%230b2e59'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pine:#0e2a23; --pine2:#16483c; --mint:#0e9f6e; --amber:#f5b53f; --amber-soft:#fef3dd;
-  --bg:#f4f6f5; --card:#fff; --ink:#131a17; --mut:#75807a; --line:#e3e9e6;
-  --red:#e8455c; --rad:14px;
-  --shadow:0 1px 2px rgba(14,42,35,.06),0 4px 14px rgba(14,42,35,.05);
+  --pine:#0b2e59; --pine2:#17457d; --pine3:#1f5f9e; --mint:#0e9f6e; --amber:#f2a619; --amber2:#d98c0a; --amber-soft:#fdf0d3;
+  --bg:#f5f3ec; --card:#fff; --ink:#101c2c; --mut:#647082; --line:#e6e1d3;
+  --red:#e8455c; --ok:#0a8a4a; --rad:14px;
+  --ph:#e9edf3; --soft:#f0f3f8; --redsoft:#fdeef0; --amberline:#f3d794;
+  --foot:#081f3d; --foottx:#c9d6e8; --ring:rgba(11,46,89,.09);
+  --shadow:0 1px 2px rgba(11,46,89,.08),0 4px 14px rgba(11,46,89,.07);
 }
 *{ margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; -webkit-tap-highlight-color:transparent; }
 body{ background:var(--bg); color:var(--ink); padding-bottom:78px; }
@@ -28,10 +31,12 @@ svg{ display:block; }
 
 /* الهيدر: البحث أولًا */
 header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12px 14px 14px;
-  position:sticky; top:0; z-index:60; box-shadow:0 4px 18px rgba(14,42,35,.3); }
+  position:sticky; top:0; z-index:60; box-shadow:0 4px 18px rgba(8,18,32,.35); }
 .toprow{ display:flex; align-items:center; gap:10px; }
-.logo{ font-size:25px; font-weight:900; color:#fff; white-space:nowrap; letter-spacing:.3px; }
-.logo span{ color:var(--amber); }
+.logo{ display:flex; align-items:center; gap:9px; white-space:nowrap; }
+.logo .lmark{ width:34px; height:34px; flex:none; filter:drop-shadow(0 3px 8px rgba(0,0,0,.28)); }
+.logo .lword{ font-size:23px; font-weight:900; color:#fff; letter-spacing:.2px; }
+.logo .lword i{ color:var(--amber); font-style:normal; }
 #cartBtn{ margin-inline-start:auto; background:var(--amber); border:none; border-radius:12px;
   width:42px; height:42px; cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
   box-shadow:0 4px 12px rgba(245,181,63,.4); }
@@ -42,8 +47,8 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .searchwrap{ position:relative; margin-top:11px; }
 .searchwrap svg{ position:absolute; top:50%; inset-inline-start:14px; transform:translateY(-50%); width:18px; height:18px; opacity:.55; }
 #search{ width:100%; border:none; border-radius:12px; padding:11px 42px 11px 14px; font-size:13.5px;
-  background:#fff; color:var(--ink); outline:none; box-shadow:0 2px 8px rgba(0,0,0,.12); }
-#search::placeholder{ color:#9aa7a1; }
+  background:var(--card); color:var(--ink); outline:none; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+#search::placeholder{ color:var(--mut); }
 
 /* شريط العرض الترويجي */
 #announce{ display:none; margin:12px 12px 0; background:linear-gradient(120deg,var(--amber),#ffd166);
@@ -57,10 +62,10 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 #cats::-webkit-scrollbar{ display:none; }
 .catc{ background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:58px; }
 .catc .circ{ width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  color:#fff; font-weight:900; font-size:20px; box-shadow:var(--shadow); border:3px solid #fff; transition:transform .15s; }
+  color:#fff; font-weight:900; font-size:20px; box-shadow:var(--shadow); border:3px solid var(--card); transition:transform .15s; }
 .catc:active .circ{ transform:scale(.92); }
 .catc.on .circ{ outline:3px solid var(--mint); outline-offset:2px; }
-.catc span{ font-size:11.5px; font-weight:700; color:#3d4a44; text-align:center; max-width:64px; line-height:1.4; }
+.catc span{ font-size:11.5px; font-weight:700; color:var(--mut); text-align:center; max-width:64px; line-height:1.4; }
 
 /* الأقسام الأفقية */
 .sec{ margin-top:14px; }
@@ -73,7 +78,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .hcard{ min-width:148px; max-width:148px; background:var(--card); border-radius:var(--rad); overflow:hidden;
   box-shadow:var(--shadow); cursor:pointer; scroll-snap-align:start; position:relative; transition:transform .15s; }
 .hcard:active{ transform:scale(.96); }
-.hcard .imgw{ position:relative; aspect-ratio:1; background:#e9efec; overflow:hidden; }
+.hcard .imgw{ position:relative; aspect-ratio:1; background:var(--ph); overflow:hidden; }
 .hcard img{ width:100%; height:100%; object-fit:cover; display:block; }
 .hcard .info{ padding:8px 10px 10px; }
 .hcard .name{ font-size:12.5px; font-weight:700; line-height:1.5; height:3em; overflow:hidden;
@@ -83,18 +88,18 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 /* الفلاتر + الشبكة */
 #controls{ display:flex; justify-content:space-between; align-items:center; padding:12px 16px 4px; }
 #count{ font-size:12px; color:var(--mut); font-weight:700; }
-#sort{ border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:6px 12px;
-  font-size:12.5px; font-weight:700; color:#3d4a44; outline:none; }
+#sort{ border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:6px 12px;
+  font-size:12.5px; font-weight:700; color:var(--mut); outline:none; }
 .sec-title{ font-size:16px; font-weight:900; padding:10px 16px 0; display:flex; align-items:center; gap:7px; }
 .sec-title::before{ content:""; width:8px; height:20px; border-radius:4px; background:var(--pine); }
 #grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:10px 12px; max-width:1100px; margin:auto; }
 @media(min-width:640px){ #grid{ grid-template-columns:repeat(3,1fr); gap:14px; } }
 @media(min-width:900px){ #grid{ grid-template-columns:repeat(4,1fr); gap:16px; } }
-.card{ background:var(--card); border-radius:var(--rad); overflow:hidden; cursor:pointer; box-shadow:var(--shadow);
+.card{ background:var(--card); border-radius:var(--rad); overflow:hidden; cursor:pointer; box-shadow:var(--shadow); border:1px solid var(--line);
   display:flex; flex-direction:column; position:relative; transition:transform .15s; animation:fadeUp .3s both; }
 @keyframes fadeUp{ from{ opacity:0; transform:translateY(8px); } }
 .card:active{ transform:scale(.97); }
-.card .imgw{ position:relative; aspect-ratio:1; background:#e9efec; overflow:hidden; }
+.card .imgw{ position:relative; aspect-ratio:1; background:var(--ph); overflow:hidden; }
 .card img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .25s; }
 .card:active img{ transform:scale(1.05); }
 .badge-off{ position:absolute; top:8px; inset-inline-start:8px; background:var(--red); color:#fff;
@@ -105,20 +110,20 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .card .name{ font-size:13px; font-weight:700; line-height:1.5; min-height:2.9em;
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .price{ font-weight:900; color:var(--mint); font-size:16.5px; }
-.old{ text-decoration:line-through; color:#aeb8b3; font-size:11.5px; font-weight:600; margin-inline-start:6px; }
-.low{ font-size:11px; color:#c05a12; font-weight:800; }
+.old{ text-decoration:line-through; color:var(--mut); font-size:11.5px; font-weight:600; margin-inline-start:6px; }
+.low{ font-size:11px; color:var(--amber2); font-weight:800; }
 .addbtn{ margin-top:6px; background:var(--pine); color:#fff; border:none; border-radius:10px;
   padding:9px; font-weight:800; cursor:pointer; font-size:12.5px; display:flex; align-items:center; justify-content:center; gap:6px; }
 .addbtn svg{ width:15px; height:15px; display:inline; }
-.addbtn:disabled{ background:#c8d1cc; cursor:default; }
+.addbtn:disabled{ background:var(--ph); color:var(--mut); cursor:default; }
 
 /* سكيلتون */
-.sk{ background:#fff; border-radius:var(--rad); overflow:hidden; box-shadow:var(--shadow); }
+.sk{ background:var(--card); border-radius:var(--rad); overflow:hidden; box-shadow:var(--shadow); }
 .sk .a{ aspect-ratio:1; } .sk .b{ height:13px; margin:11px; border-radius:7px; } .sk .c{ height:11px; margin:0 11px 13px; width:50%; border-radius:6px; }
-.shimmer{ background:linear-gradient(90deg,#e9efec 25%,#f7f9f8 50%,#e9efec 75%); background-size:200% 100%; animation:sh 1.2s infinite; }
+.shimmer{ background:linear-gradient(90deg,var(--ph) 25%,var(--card) 50%,var(--ph) 75%); background-size:200% 100%; animation:sh 1.2s infinite; }
 @keyframes sh{ to{ background-position:-200% 0; } }
 .empty{ text-align:center; padding:56px 24px; color:var(--mut); font-size:14.5px; grid-column:1/-1;
-  background:#fff; border-radius:var(--rad); margin:12px 4px; box-shadow:var(--shadow); line-height:2; }
+  background:var(--card); border-radius:var(--rad); margin:12px 4px; box-shadow:var(--shadow); line-height:2; }
 .empty .e{ margin:0 auto 12px; width:64px; height:64px; border-radius:50%; background:var(--amber-soft);
   display:flex; align-items:center; justify-content:center; }
 .empty .e svg{ width:30px; height:30px; }
@@ -127,42 +132,42 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .overlay{ position:fixed; inset:0; background:rgba(14,42,35,.6); z-index:100; display:none;
   align-items:flex-end; justify-content:center; backdrop-filter:blur(3px); }
 .overlay.show{ display:flex; }
-.sheet{ background:#fff; width:100%; max-width:540px; border-radius:24px 24px 0 0;
+.sheet{ background:var(--card); width:100%; max-width:540px; border-radius:24px 24px 0 0;
   max-height:92vh; overflow-y:auto; padding:14px 18px 20px; animation:up .2s ease-out; position:relative; }
 @keyframes up{ from{ transform:translateY(40px); opacity:.4; } }
 .sheet::before{ content:""; display:block; width:44px; height:5px; border-radius:999px; background:#e3e9e6; margin:0 auto 12px; }
 .sheet h2{ font-size:19px; font-weight:900; }
-.closeX{ position:absolute; top:12px; inset-inline-start:14px; background:#f0f4f2; border:none;
+.closeX{ position:absolute; top:12px; inset-inline-start:14px; background:var(--soft); border:none;
   width:36px; height:36px; border-radius:50%; font-size:15px; cursor:pointer; z-index:2; }
-.gallery{ position:relative; border-radius:18px; overflow:hidden; background:#e9efec; box-shadow:var(--shadow); }
+.gallery{ position:relative; border-radius:18px; overflow:hidden; background:var(--ph); box-shadow:var(--shadow); }
 .gallery .track{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
 .gallery .track::-webkit-scrollbar{ display:none; }
 .gallery img{ width:100%; flex:0 0 100%; aspect-ratio:1; object-fit:cover; scroll-snap-align:center; }
 .dots{ position:absolute; bottom:12px; left:0; right:0; display:flex; gap:6px; justify-content:center; }
 .dots i{ width:7px; height:7px; border-radius:999px; background:rgba(255,255,255,.7); transition:all .2s; }
 .dots i.on{ background:var(--amber); width:20px; }
-.sheet .desc{ color:#4c5852; font-size:14px; margin:10px 0; line-height:1.9; white-space:pre-line; }
+.sheet .desc{ color:var(--mut); font-size:14px; margin:10px 0; line-height:1.9; white-space:pre-line; }
 .optrow{ margin:14px 0; }
 .optrow>label{ font-weight:800; font-size:13.5px; display:block; margin-bottom:8px; }
 .opts{ display:flex; gap:8px; flex-wrap:wrap; }
 .opt{ border:1.5px solid var(--line); border-radius:11px; padding:8px 18px; font-weight:700; font-size:13px;
-  cursor:pointer; background:#fff; color:#3d4a44; transition:all .15s; }
+  cursor:pointer; background:var(--soft); color:var(--ink); transition:all .15s; }
 .opt.sel{ border-color:var(--pine); background:var(--pine); color:#fff; }
 .qty{ display:flex; align-items:center; gap:16px; }
-.qty button{ width:40px; height:40px; border-radius:13px; border:1.5px solid var(--line); background:#fff;
+.qty button{ width:40px; height:40px; border-radius:13px; border:1.5px solid var(--line); background:var(--soft);
   font-size:18px; font-weight:800; cursor:pointer; }
 .qty b{ font-size:17px; min-width:22px; text-align:center; }
-.bigbtn{ width:100%; background:linear-gradient(180deg,var(--amber),#eda415); color:var(--pine); border:none;
+.bigbtn{ width:100%; background:linear-gradient(180deg,var(--amber),var(--amber2)); color:var(--pine); border:none;
   border-radius:14px; padding:15px; font-size:16px; font-weight:900; cursor:pointer; margin-top:16px;
   box-shadow:0 6px 16px rgba(245,181,63,.45); transition:transform .12s; }
 .bigbtn:active{ transform:scale(.98); }
 .bigbtn:disabled{ opacity:.55; box-shadow:none; }
-.ghostbtn{ width:100%; background:#eef3f1; color:var(--pine); border:none; border-radius:14px;
+.ghostbtn{ width:100%; background:var(--soft); color:var(--pine); border:none; border-radius:14px;
   padding:13px; font-size:14px; font-weight:800; cursor:pointer; margin-top:10px; }
-.cartrow{ display:flex; gap:12px; padding:13px 0; border-bottom:1px solid #eef2f0; align-items:flex-start; }
-.cartrow img{ width:62px; height:62px; border-radius:13px; object-fit:cover; background:#e9efec; }
+.cartrow{ display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--line); align-items:flex-start; }
+.cartrow img{ width:62px; height:62px; border-radius:13px; object-fit:cover; background:var(--ph); }
 .cartrow .cinfo{ flex:1; font-size:13.5px; line-height:1.7; }
-.cartrow .rm{ background:#fdeef0; border:none; color:var(--red); cursor:pointer; font-size:12px; font-weight:800; border-radius:10px; padding:6px 10px; }
+.cartrow .rm{ background:var(--redsoft); border:none; color:var(--red); cursor:pointer; font-size:12px; font-weight:800; border-radius:10px; padding:6px 10px; }
 .totals{ margin-top:14px; font-size:14.5px; }
 .totals>div{ display:flex; justify-content:space-between; padding:6px 0; }
 .totals .grand{ font-weight:900; font-size:18px; border-top:2px dashed var(--line); padding-top:11px; margin-top:8px; }
@@ -170,14 +175,14 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .field{ margin-bottom:13px; }
 .field label{ font-weight:800; font-size:13px; display:block; margin-bottom:6px; }
 .field input,.field select,.field textarea{ width:100%; padding:12px 14px; border:1.5px solid var(--line);
-  border-radius:13px; font-size:15px; background:#fafcfb; outline:none; transition:all .15s; }
-.field input:focus,.field select:focus,.field textarea:focus{ border-color:var(--pine); background:#fff; box-shadow:0 0 0 4px rgba(14,42,35,.07); }
+  border-radius:13px; font-size:15px; background:var(--soft); outline:none; transition:all .15s; }
+.field input:focus,.field select:focus,.field textarea:focus{ border-color:var(--pine); background:var(--card); box-shadow:0 0 0 4px var(--ring); }
 .payopt{ display:flex; gap:10px; }
 .payopt label{ flex:1; border:1.5px solid var(--line); border-radius:14px; padding:13px 8px; text-align:center;
-  font-weight:800; font-size:13px; cursor:pointer; color:#3d4a44; background:#fff; transition:all .15s; }
+  font-weight:800; font-size:13px; cursor:pointer; color:var(--ink); background:var(--card); transition:all .15s; }
 .payopt input{ display:none; }
 .payopt label.sel{ border-color:var(--pine); background:var(--pine); color:#fff; }
-.vfbox{ background:var(--amber-soft); border:1.5px solid #f3d794; border-radius:14px; padding:13px;
+.vfbox{ background:var(--amber-soft); border:1.5px solid var(--amberline); border-radius:14px; padding:13px;
   font-size:14px; margin-top:12px; display:none; line-height:2; }
 .promorow{ display:flex; gap:8px; }
 .promorow input{ flex:1; }
@@ -191,9 +196,9 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .wbtn{ display:block; background:#22b95c; color:#fff; border-radius:14px; padding:14px;
   text-decoration:none; font-weight:800; margin-top:14px; font-size:15px; }
 .statusline{ display:flex; justify-content:space-between; margin:22px 4px 8px; position:relative; }
-.statusline::before{ content:""; position:absolute; top:15px; right:24px; left:24px; height:3px; background:#e6ece9; border-radius:999px; }
-.st{ position:relative; text-align:center; flex:1; font-size:11.5px; font-weight:800; color:#9aa7a1; }
-.st i{ display:flex; width:32px; height:32px; border-radius:50%; background:#e6ece9; margin:0 auto 7px;
+.statusline::before{ content:""; position:absolute; top:15px; right:24px; left:24px; height:3px; background:var(--ph); border-radius:999px; }
+.st{ position:relative; text-align:center; flex:1; font-size:11.5px; font-weight:800; color:var(--mut); }
+.st i{ display:flex; width:32px; height:32px; border-radius:50%; background:var(--ph); margin:0 auto 7px;
   align-items:center; justify-content:center; font-style:normal; color:#fff; font-size:14px; font-weight:800; }
 .st.done{ color:var(--ink); } .st.done i{ background:var(--mint); }
 .st.now i{ background:var(--amber); color:var(--pine); box-shadow:0 0 0 5px rgba(245,181,63,.3); }
@@ -215,14 +220,14 @@ nav a.on{ color:var(--pine); border-top-color:var(--amber); }
 .hero-track{ display:flex; transition:transform .5s cubic-bezier(.25,.8,.3,1); }
 .hero-slide{ min-width:100%; min-height:158px; padding:22px 20px 26px; position:relative; overflow:hidden;
   display:flex; flex-direction:column; justify-content:center; color:#fff;
-  background:linear-gradient(140deg,var(--pine) 10%,var(--pine2) 55%,#1d6b52); }
-.hero-slide.alt{ background:linear-gradient(140deg,#c98708,var(--amber) 55%,#ffd166); color:var(--pine); }
+  background:linear-gradient(140deg,var(--pine) 10%,var(--pine2) 55%,var(--pine3)); }
+.hero-slide.alt{ background:linear-gradient(140deg,var(--amber2),var(--amber) 55%,#ffd166); color:var(--pine); }
 .hero-slide::after{ content:""; position:absolute; inset:auto -40px -60px auto; width:170px; height:170px;
   border-radius:50%; background:rgba(255,255,255,.09); }
 .hero-slide::before{ content:""; position:absolute; inset:-70px auto auto -50px; width:150px; height:150px;
   border-radius:50%; background:rgba(255,255,255,.07); }
 .hero-kick{ font-size:12.5px; font-weight:700; opacity:.8; position:relative; z-index:1; }
-.hero-h{ font-size:23px; font-weight:900; line-height:1.45; margin:4px 0 6px; position:relative; z-index:1; }
+.hero-h{ font-size:25px; font-weight:900; line-height:1.45; margin:4px 0 6px; position:relative; z-index:1; }
 .hero-sub{ font-size:13px; opacity:.85; margin-bottom:14px; position:relative; z-index:1; line-height:1.6; }
 .hero-cta{ align-self:flex-start; background:#fff; color:var(--pine); border:0; border-radius:13px;
   padding:10px 20px; font-weight:800; font-size:14px; cursor:pointer; position:relative; z-index:1;
@@ -230,7 +235,7 @@ nav a.on{ color:var(--pine); border-top-color:var(--amber); }
 .alt .hero-cta{ background:var(--pine); color:#fff; }
 .hero-cta:active{ transform:scale(.94); }
 .hero-dots{ position:absolute; bottom:11px; inset-inline-start:14px; display:flex; gap:6px; z-index:2;
-  background:rgba(14,42,35,.3); padding:5px 8px; border-radius:11px; }
+  background:rgba(8,18,32,.35); padding:5px 8px; border-radius:11px; }
 .hero-dots i{ width:6px; height:6px; border-radius:4px; background:rgba(255,255,255,.55); transition:all .3s ease; }
 .hero-dots i.on{ width:20px; background:#fff; }
 /* ---------- v4: شارات وتفاصيل ---------- */
@@ -255,7 +260,7 @@ nav a{ transition:color .2s ease; }
 .card .name{ font-weight:700; }
 .price{ font-weight:900; }
 /* ---------- v4: فوتر ---------- */
-#foot{ margin-top:28px; background:linear-gradient(180deg,var(--pine),#0a1f19); color:#cfe3da; padding:28px 20px 22px; }
+#foot{ margin-top:28px; background:linear-gradient(180deg,var(--pine),var(--foot)); color:var(--foottx); padding:28px 20px 22px; }
 .fbrand{ font-size:26px; font-weight:900; color:#fff; }
 .fbrand span{ color:var(--amber); }
 .ftag{ font-size:13px; opacity:.72; margin:6px 0 14px; line-height:1.8; }
@@ -271,16 +276,16 @@ nav a{ transition:color .2s ease; }
 .ptrust{ display:flex; gap:8px; margin:12px 0 4px; }
 .ptrust div{ flex:1; background:var(--amber-soft); border-radius:12px; padding:8px 4px; text-align:center; font-size:11px; font-weight:700; color:var(--pine); }
 .ptrust svg{ width:18px; height:18px; display:block; margin:0 auto 4px; }
-.oitems{ background:#f7f8fc; border-radius:14px; padding:10px 12px; margin-bottom:14px; max-height:150px; overflow:auto; }
+.oitems{ background:var(--soft); border-radius:14px; padding:10px 12px; margin-bottom:14px; max-height:150px; overflow:auto; }
 .oitems .oi{ display:flex; align-items:center; gap:10px; padding:5px 0; font-size:13px; }
 .oitems img{ width:38px; height:38px; border-radius:9px; object-fit:cover; flex:none; }
 .oitems .q{ margin-inline-start:auto; font-weight:800; color:var(--pine); white-space:nowrap; }
-.reassure{ text-align:center; font-size:12px; color:#8a8fa5; margin-top:10px; }
+.reassure{ text-align:center; font-size:12px; color:var(--mut); margin-top:10px; }
 .trust{ display:flex; gap:10px; margin:22px 12px 0; }
 .trust div{ flex:1; background:#fff; border-radius:16px; padding:14px 6px; text-align:center; font-size:12px; font-weight:800; color:var(--pine); box-shadow:var(--shadow); }
 .trust svg{ width:22px; height:22px; display:block; margin:0 auto 6px; }
 .trust a{ color:inherit; text-decoration:none; }
-.courierbox{ display:flex; align-items:center; gap:10px; background:var(--amber-soft); border:1px solid #f3e3bd; border-radius:14px; padding:12px 14px; margin-top:12px; font-size:13.5px; }
+.courierbox{ display:flex; align-items:center; gap:10px; background:var(--amber-soft); border:1px solid var(--amberline); border-radius:14px; padding:12px 14px; margin-top:12px; font-size:13.5px; }
 .courierbox svg{ width:20px; height:20px; flex:none; }
 .courierbox b{ color:var(--pine); }
 .price, .old, .low{ font-variant-numeric:tabular-nums; }
@@ -289,13 +294,40 @@ nav{ padding-bottom:env(safe-area-inset-bottom); }
 body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
 .sheet{ overscroll-behavior:contain; }
 .clearsearch{ display:block; margin:14px auto 0; background:#fff; border:1.5px solid var(--pine); color:var(--pine); border-radius:12px; padding:9px 22px; font-weight:800; font-size:13.5px; cursor:pointer; }
+
+/* ---------- v6: الوضع الليلي ---------- */
+@media (prefers-color-scheme: dark){
+  :root{
+    --pine:#12283f; --pine2:#1a3a5f; --pine3:#24507f; --mint:#2ac98f; --amber:#f5b53f; --amber2:#e8a83e; --amber-soft:#1c2c48;
+    --bg:#081220; --card:#102033; --ink:#edf1f7; --mut:#8f9eb4; --line:#223550;
+    --red:#ff6b7d; --ok:#3ddc97;
+    --ph:#1b2c47; --soft:#16263f; --redsoft:#3a1e28; --amberline:#3d3420;
+    --foot:#0b1930; --foottx:#a9bcd6; --ring:rgba(0,0,0,.35);
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.35);
+  }
+  header{ box-shadow:0 4px 18px rgba(0,0,0,.5); }
+  nav{ background:rgba(16,32,51,.96); box-shadow:0 -4px 20px rgba(0,0,0,.4); }
+  nav a.on{ color:var(--amber); }
+  .addbtn:not(:disabled){ background:var(--amber); color:#081220; }
+  .addbtn:not(:disabled) svg{ stroke:#081220; }
+  .opt.sel, .payopt label.sel{ background:var(--amber); border-color:var(--amber); color:#081220; }
+  .promorow button{ background:var(--amber); color:#081220; }
+  .ghostbtn, .closeX, .qty button{ color:var(--ink); }
+  .catc.on .circ{ outline-color:var(--amber); }
+  .catc:first-child .circ{ background:var(--amber) !important; color:#081220; }
+  .logo .lword{ color:#fff; }
+}
+.pyr{ position:absolute; bottom:0; inset-inline-end:12px; width:132px; opacity:.14; z-index:0; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="toprow">
-    <div class="logo">دكانة<span>.</span></div>
+    <div class="logo">
+      <svg class="lmark" viewBox="0 0 140 140" fill="none"><rect x="6" y="6" width="128" height="128" rx="36" fill="#f2a619"/><rect x="17" y="17" width="106" height="106" rx="27" fill="none" stroke="#0b2e59" stroke-width="5"/><g transform="translate(23,27) scale(0.72)"><path d="M114 14 L100 30 C68 12 26 34 26 66 C26 92 58 102 104 96" stroke="#0b2e59" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="66" cy="56" r="14" fill="#0b2e59"/></g></svg>
+      <span class="lword">دكانة<i>.</i></span>
+    </div>
     <button id="cartBtn" aria-label="السلة">
       <svg viewBox="0 0 24 24" fill="none" stroke="#0e2a23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>
       <span id="cartCount">0</span>
@@ -492,7 +524,7 @@ const CAT_ICONS = [
 function catIcon(name){ const hit = CAT_ICONS.find(([re])=>re.test(name)); return hit ? hit[1] : name.trim().charAt(0); }
 function renderCats(){
   const circ = (t,color) => `<div class="circ" style="background:${color}">${t}</div>`;
-  $("cats").innerHTML = `<button class="catc ${state.cat==='all'?'on':''}" onclick="pickCat('all')">${circ("الكل","#0e2a23")}<span>الكل</span></button>` +
+  $("cats").innerHTML = `<button class="catc ${state.cat==='all'?'on':''}" onclick="pickCat('all')">${circ("الكل","var(--pine)")}<span>الكل</span></button>` +
     cats.map((c,i) => `<button class="catc ${state.cat===c.id?'on':''}" onclick="pickCat('${c.id}')">${circ(catIcon(c.name), CAT_COLORS[i%CAT_COLORS.length])}<span>${c.name}</span></button>`).join("");
 }
 function pickCat(id){ state.cat=id; renderCats(); renderGrid(); }
@@ -512,8 +544,8 @@ function heroGo(id){ const el = document.getElementById(id); if (!el) return;
   window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 120), behavior:"smooth" }); }
 function renderHero(){
   const track = $("heroTrack"), dots = $("heroDots"); if (!track) return;
-  const slides = [{ kick:"دكانة — تسوق أونلاين في مصر", h:"كل اللي محتاجه<br>في مكان واحد",
-    sub:"توصيل لكل المحافظات — وادفع كاش عند الاستلام أو فودافون كاش", cta:"تسوق الآن", target:"sections", cls:"" }];
+  const slides = [{ kick:"دكانة — تسوّق مصري أصلي", h:"من قلب مصر<br>لحد باب بيتك",
+    sub:"ملابس وإكسسوارات وإلكترونيات — وادفع كاش عند الاستلام أو فودافون كاش", cta:"تسوق الآن", target:"sections", cls:"" }];
   const offers = products.filter(p=>p.oldPrice&&p.oldPrice>p.price);
   if (offers.length){
     const maxOff = Math.max(...offers.map(p=>Math.round((1-p.price/p.oldPrice)*100)));
@@ -521,6 +553,7 @@ function renderHero(){
       cta:"شوف العروض", target:"sec-offers", cls:"alt" });
   }
   track.innerHTML = slides.map(s=>`<div class="hero-slide ${s.cls}">
+    <svg class="pyr" viewBox="0 0 132 60" fill="#fff"><path d="M2 60 28 20 54 60Z"/><path d="M46 60 76 6 106 60Z"/><path d="M96 60 114 30 132 60Z"/></svg>
     <div class="hero-kick">${s.kick}</div><div class="hero-h">${s.h}</div><div class="hero-sub">${s.sub}</div>
     <button class="hero-cta" onclick="heroGo('${s.target}')">${s.cta}</button></div>`).join("");
   dots.style.display = slides.length > 1 ? "flex" : "none";
@@ -537,9 +570,9 @@ function renderFooter(){
   const el = $("foot"); if (!el) return;
   const tr = $("trust");
   if (tr) tr.innerHTML = `
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6Z"/><path d="M9 11.5l2 2 4-4"/></svg>دفع آمن</div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>${settings.whatsappNumber?`<a href="https://wa.me/${settings.whatsappNumber}" target="_blank" rel="noopener">خدمة عملاء واتساب</a>`:"خدمة عملاء واتساب"}</div>`;
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>كاش عند الاستلام</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>فودافون كاش</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>`;
   const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>';
   const PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>';
   const TRUCK = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>';
@@ -683,7 +716,7 @@ function renderCart(){
     <div class="cartrow">
       <img src="${i.image}" onerror="this.style.visibility='hidden'">
       <div class="cinfo"><b>${i.name}</b><br>
-        <span style="color:#8a8fa5">${i.size?("مقاس: "+i.size+" "):""}${i.color?("لون: "+i.color):""}</span><br>
+        <span style="color:var(--mut)">${i.size?("مقاس: "+i.size+" "):""}${i.color?("لون: "+i.color):""}</span><br>
         ${C.eg(i.price)} × ${i.qty}
         <div class="qty" style="margin-top:6px">
           <button onclick="cartQty(${ix},1)">+</button><b>${i.qty}</b><button onclick="cartQty(${ix},-1)">−</button>
@@ -691,7 +724,7 @@ function renderCart(){
       <button class="rm" onclick="cartRm(${ix})">حذف ✕</button>
     </div>`).join("");
   $("cartTotals").innerHTML = `<div><span>إجمالي المنتجات</span><span>${C.eg(C.cartSubtotal(cart))}</span></div>
-    <div style="color:#8a8fa5;font-size:12.5px">الشحن والخصم بيتحسبوا في الخطوة الجاية</div>`;
+    <div style="color:var(--mut);font-size:12.5px">الشحن والخصم بيتحسبوا في الخطوة الجاية</div>`;
 }
 function cartQty(ix,d){ cart[ix].qty = Math.max(1, cart[ix].qty+d); saveCart(); renderCart(); }
 function cartRm(ix){ cart.splice(ix,1); saveCart(); renderCart(); }
@@ -726,14 +759,14 @@ async function applyPromo(){
     const check = C.validatePromo(data, C.cartSubtotal(cart));
     if (!check.ok){
       appliedCode=""; appliedPromo=null;
-      $("promoMsg").style.color="#e74c3c";
+      $("promoMsg").style.color="var(--red)";
       $("promoMsg").textContent = {not_found:"الكود ده مش صحيح", inactive:"الكود ده متوقف", expired:"الكود ده انتهى", min_total:"الكود ده شغال للطلبات فوق "+C.eg(check.minTotal)}[check.reason] || "الكود مش شغال";
     } else {
       appliedCode=code; appliedPromo=data;
-      $("promoMsg").style.color="#0a7d32";
+      $("promoMsg").style.color="var(--ok)";
       $("promoMsg").textContent = "تم تطبيق الخصم! وفّرت "+C.eg(C.promoDiscount(data, C.cartSubtotal(cart)));
     }
-  } catch(e){ $("promoMsg").style.color="#e74c3c"; $("promoMsg").textContent = "حصل خطأ — جرب تاني"; }
+  } catch(e){ $("promoMsg").style.color="var(--red)"; $("promoMsg").textContent = "حصل خطأ — جرب تاني"; }
   renderOrderTotals();
 }
 function updateVfBox(){
@@ -781,10 +814,10 @@ async function placeOrder(){
       <div class="success">
         <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M4 12.5 9.5 18 20 6.5"/></svg></div>
         <h2>طلبك وصل يا ${name.split(" ")[0]}!</h2>
-        <p style="margin-top:8px;color:#565b74">احتفظ بكود الطلب عشان تتبعه من "تتبع طلبك" تحت</p>
+        <p style="margin-top:8px;color:var(--mut)">احتفظ بكود الطلب عشان تتبعه من "تتبع طلبك" تحت</p>
         <div class="ordercode">${code}</div>
         ${settings.whatsappNumber ? `<a class="wbtn" href="https://wa.me/${settings.whatsappNumber}?text=${waText}" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline;vertical-align:-2px"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg> ابعت طلبك على واتساب لتأكيد أسرع</a>` : ""}
-        <p style="margin-top:12px;font-size:13.5px;color:#565b74">هنتواصل معك على <b>${phone}</b> لتأكيد الطلب قبل الشحن.</p>
+        <p style="margin-top:12px;font-size:13.5px;color:var(--mut)">هنتواصل معك على <b>${phone}</b> لتأكيد الطلب قبل الشحن.</p>
         <button class="bigbtn" onclick="location.hash='';location.reload()">كمّل تسوق</button>
       </div>`;
   } catch(e) {
@@ -813,15 +846,15 @@ async function trackOrder(){
       <div class="empty"><span class="e">${XSVG}</span>الطلب ${code} اتلغى — لو عندك استفسار كلمنا</div>` : `
       <div style="margin-top:16px">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <b>${code}</b><span style="color:#8a8fa5;font-size:13px">${o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleDateString("ar-EG"):""}</span>
+          <b>${code}</b><span style="color:var(--mut);font-size:13px">${o.createdAt&&o.createdAt.toDate?o.createdAt.toDate().toLocaleDateString("ar-EG"):""}</span>
         </div>
         <div class="statusline">
           ${steps.map((s,i)=>`<div class="st ${i<idx?'done':i===idx?'now done':''}"><i>${i<idx?'✓':i+1}</i>${s[1]}</div>`).join("")}
         </div>
         ${(o.status==="courier"||o.status==="shipped")&&(o.trackingNumber||settings.courierName)?`<div class="courierbox"><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg><div>${settings.courierName?`<div>شركة الشحن: <b>${settings.courierName}</b></div>`:""}${o.trackingNumber?`<div>رقم التتبع: <b dir="ltr">${o.trackingNumber}</b></div>`:""}</div></div>`:""}
-        <div style="background:#f7f8fc;border-radius:16px;padding:14px;margin-top:14px">
+        <div style="background:var(--soft);border-radius:16px;padding:14px;margin-top:14px">
           ${o.items.map(i=>`<div style="font-size:13.5px;padding:3px 0">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""}</div>`).join("")}
-          <div style="border-top:1px solid #e8eaf3;margin-top:10px;padding-top:10px;font-weight:800">الإجمالي: ${C.eg(o.total)} — ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}</div>
+          <div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px;font-weight:800">الإجمالي: ${C.eg(o.total)} — ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}</div>
         </div>
       </div>`;
   } catch(e){ $("trackResult").innerHTML = `<div class="empty">حصل خطأ — جرب تاني</div>`; }
