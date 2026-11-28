@@ -193,16 +193,16 @@ async function renderOrders(){
     ${list.length ? list.map(o=>`
     <div class="card">
       <div class="row" style="justify-content:space-between">
-        <b>${o.id} — ${o.customer.name}</b>
+        <b>${o.id} — ${C.escHtml(o.customer.name)}</b>
         <span class="badge b-${o.status}">${STATUS[o.status]||o.status}</span>
       </div>
-      <p class="muted">📞 ${o.customer.phone} — ${o.customer.governorate} — ${o.customer.address}
-        ${o.customer.notes?("<br>📝 "+o.customer.notes):""}<br>
-        💳 ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}${o.promoCode?(" — 🏷️ "+o.promoCode):""} — ${ts(o)?ts(o).toLocaleString("ar-EG"):""}</p>
-      <div style="margin:8px 0">${o.items.map(i=>`<div class="muted">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""} — ${C.eg(i.price*i.qty)}</div>`).join("")}</div>
-      <b>الإجمالي: ${C.eg(o.total)}</b> <span class="muted">(شحن: ${C.eg(o.deliveryFee)}${o.discount?(" — خصم: "+C.eg(o.discount)):""})</span>${o.trackingNumber?` <span class="muted">— تتبع: <b dir="ltr">${o.trackingNumber}</b></span>`:""}
+      <p class="muted">📞 ${C.escHtml(o.customer.phone)} — ${C.escHtml(o.customer.governorate)} — ${C.escHtml(o.customer.address)}
+        ${o.customer.notes?("<br>📝 "+C.escHtml(o.customer.notes)):""}<br>
+        💳 ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}${o.promoCode?(" — 🏷️ "+C.escHtml(o.promoCode)):""} — ${ts(o)?ts(o).toLocaleString("ar-EG"):""}</p>
+      <div style="margin:8px 0">${o.items.map(i=>`<div class="muted">• ${C.escHtml(i.name)} ×${i.qty} ${i.size?("("+C.escHtml(i.size)+")"):""} ${i.color?("["+C.escHtml(i.color)+"]"):""} — ${C.eg(i.price*i.qty)}</div>`).join("")}</div>
+      <b>الإجمالي: ${C.eg(o.total)}</b> <span class="muted">(شحن: ${C.eg(o.deliveryFee)}${o.discount?(" — خصم: "+C.eg(o.discount)):""})</span>${o.trackingNumber?` <span class="muted">— تتبع: <b dir="ltr">${C.escHtml(o.trackingNumber)}</b></span>`:""}
       <div class="row" style="margin-top:8px">
-        <input id="note-${o.id}" placeholder="ملاحظة داخلية (مش بيشوفها العميل)" value="${(o.adminNote||"").replace(/"/g,'&quot;')}" style="flex:1">
+        <input id="note-${o.id}" placeholder="ملاحظة داخلية (مش بيشوفها العميل)" value="${C.escHtml(o.adminNote||"")}" style="flex:1">
         <button class="btn gray" onclick="saveOrderNote('${o.id}')">حفظ</button>
       </div>
       <div class="row" style="margin-top:10px">
@@ -236,10 +236,10 @@ async function renderCustomers(){
     ${custs.map(c=>`
     <div class="card">
       <div class="row" style="justify-content:space-between">
-        <b>${c.name||"بدون اسم"}</b>
+        <b>${C.escHtml(c.name)||"بدون اسم"}</b>
         ${c.canceled>=2?`<span class="badge b-canceled">⚠️ كنسل ${c.canceled} مرة</span>`:(c.delivered>=2?`<span class="badge b-delivered">عميل ثابت</span>`:"")}
       </div>
-      <p class="muted">📞 ${c.phone} — ${c.gov||""}${c.lastAt?(" — آخر طلب: "+c.lastAt.toLocaleDateString("ar-EG")):""}</p>
+      <p class="muted">📞 ${C.escHtml(c.phone)} — ${C.escHtml(c.gov||"")}${c.lastAt?(" — آخر طلب: "+c.lastAt.toLocaleDateString("ar-EG")):""}</p>
       <div class="row" style="gap:16px">
         <span>🧾 ${c.orders} طلب</span>
         <span>✅ ${c.delivered} اتسلم</span>
