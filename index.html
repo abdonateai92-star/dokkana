@@ -149,7 +149,11 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
   box-shadow:0 8px 20px rgba(212,175,55,.4); cursor:pointer; }
 #toTop svg{ width:22px; height:22px; }
 .card .imgw img, .hcard .imgw img, .rcard img{ opacity:0; transition:opacity .35s ease; }
-.card .imgw img.ld, .hcard .imgw img.ld, .rcard img.ld{ opacity:1; }
+.card .imgw img.ld, .hcard .imgw img.ld, .rcard img.ld, .gallery .track img.ld{ opacity:1; }
+.gallery .track img{ opacity:0; transition:opacity .35s ease; }
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+}
 #count{ font-size:12px; color:var(--mut); font-weight:700; }
 #sort{ border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:6px 12px;
   font-size:12.5px; font-weight:700; color:var(--mut); outline:none; }
@@ -845,14 +849,16 @@ function renderRecent(){
     items.map(p => `<div class="rcard" onclick="openProduct('${p.id}')"><img src="${firstImg(p)}" alt="${p.name}" loading="lazy" onload="this.classList.add('ld')" onerror="this.style.visibility='hidden'"><div class="rn">${p.name}</div><div class="rp">${C.eg(p.price)}</div></div>`).join("") +
     `</div>`;
 }
+let pPushed = false; const baseTitle = document.title;
 function openProduct(id){
   cur = products.find(p=>p.id===id); if(!cur) return;
   trackRecent(id);
-  history.replaceState(null,"","#p/"+id);
+  if (location.hash !== "#p/"+id){ history.pushState(null,"","#p/"+id); pPushed = true; } else { pPushed = false; }
+  document.title = cur.name + " | دكانة";
   curQty = 1; $("pQty").textContent = 1;
   selSize = (cur.sizes&&cur.sizes[0])||""; selColor = (cur.colors&&cur.colors[0])||"";
   const imgs = (cur.images&&cur.images.length?cur.images:[""]);
-  $("pTrack").innerHTML = imgs.map(s=>`<img src="${s}" decoding="async" onerror="this.style.visibility='hidden'">`).join("");
+  $("pTrack").innerHTML = imgs.map(s=>`<img src="${s}" decoding="async" onload="this.classList.add('ld')" onerror="this.style.visibility='hidden'">`).join("");
   $("pDots").innerHTML = imgs.length>1 ? imgs.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join("") : "";
   $("pCount").style.display = imgs.length>1 ? "" : "none";
   $("pCount").textContent = "1/" + imgs.length;
@@ -885,7 +891,14 @@ function pickOpt(el, kind, val){
   if (kind==="size"){ selSize=val; document.querySelectorAll("#pSizes .opt").forEach(b=>b.classList.toggle("sel", b===el)); }
   else { selColor=val; document.querySelectorAll("#pColors .opt").forEach(b=>b.classList.toggle("sel", b===el)); }
 }
-function closeProduct(){ closeOverlay("pOverlay"); history.replaceState(null,"","#"); }
+function closeProduct(){
+  document.title = baseTitle;
+  if (pPushed){ pPushed = false; history.back(); }
+  else { closeOverlay("pOverlay"); history.replaceState(null,"",location.pathname); }
+}
+window.addEventListener("popstate", () => {
+  if ($("pOverlay").classList.contains("show")){ pPushed = false; closeOverlay("pOverlay"); document.title = baseTitle; }
+});
 function chQty(d){
   const max = cur && cur.stock!==null&&cur.stock!==undefined&&cur.stock!=="" ? Number(cur.stock) : 99;
   curQty = Math.max(1, Math.min(max, curQty+d)); $("pQty").textContent = curQty;
@@ -1222,7 +1235,7 @@ function openPolicy(){ $("polOverlay").classList.add("show"); }
 $("cartBtn").onclick = openCart;
 $("favBtn").onclick = openFavs;
 ["pOverlay","cOverlay","oOverlay","tOverlay"].forEach(id =>
-  $(id).addEventListener("click", e => { if (e.target.id===id){ closeOverlay(id); if(id==="pOverlay") history.replaceState(null,"","#"); } }));
+  $(id).addEventListener("click", e => { if (e.target.id===id){ if(id==="pOverlay") closeProduct(); else closeOverlay(id); } }));
 
 /* ---------- تشغيل ---------- */
 skeleton();
