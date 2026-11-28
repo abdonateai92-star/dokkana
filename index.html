@@ -616,7 +616,7 @@ function toast(msg){ const t=$("toast"); t.textContent=msg; t.style.display="blo
 async function loadAll(force) {
   let cached = null;
   try { cached = JSON.parse(sessionStorage.getItem(CACHE_KEY)); } catch(e) {}
-  if (!force && cached && Date.now()-cached.ts < CACHE_TTL) {
+  if (!force && cached && cached.products && cached.products.length && Date.now()-cached.ts < CACHE_TTL) {
     settings = Object.assign(settings, cached.settings); cats = cached.cats; products = cached.products;
   } else {
     const [sSnap, cSnap, pSnap] = await Promise.all([
@@ -624,10 +624,13 @@ async function loadAll(force) {
       db.collection("categories").where("active","==",true).get(),
       db.collection("products").where("active","==",true).get()
     ]);
+    /* لو النت ضعف لحظة الفتح، فايربيس ممكن يرجّع نتيجة فاضية من كاش الجهاز — دي قراءة ناقصة مش "متجر فاضي" */
+    if (!pSnap.docs.length && pSnap.metadata && pSnap.metadata.fromCache) throw new Error("offline-cache-empty");
     if (sSnap.exists) settings = Object.assign(settings, sSnap.data());
     cats = cSnap.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
     products = pSnap.docs.map(d => ({id:d.id, ...d.data()}));
-    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), settings, cats, products})); } catch(e){}
+    /* ما نخزنش نتيجة فاضية — عشان مايفضلش المتجر باين فاضي 5 دقايق غلط */
+    if (products.length) try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), settings, cats, products})); } catch(e){}
   }
   $("announce").textContent = settings.announcement || "أهلًا بيك في دكانة — ملابس وإكسسوارات وإلكترونيات، وادفع عند الاستلام"; $("announce").style.display="block";
   renderCats(); renderGrid(); renderCartCount(); renderFavCount(); renderHero(); renderFooter();
