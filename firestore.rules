@@ -25,10 +25,35 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // الطلبات: أي حد ينشئ طلب، القراءة والتعديل للأدمن بس
+    // الطلبات: أي حد ينشئ طلب، وأي حد يقرأ طلب واحد لو معاه كوده (تتبع الطلب)
+    // القائمة الكاملة والتعديل والحذف للأدمن بس
     match /orders/{id} {
       allow create: if true;
-      allow read, update, delete: if isAdmin();
+      allow get: if true;
+      allow list, update, delete: if isAdmin();
+    }
+
+    // أكواد الخصم: أي حد يقرأ كود واحد لو معاه الكود (تطبيق الخصم في الطلب)
+    // القائمة الكاملة والإنشاء والتعديل للأدمن بس
+    match /promos/{id} {
+      allow get: if true;
+      allow list, write: if isAdmin();
+    }
+
+    // التقييمات: المعتمد بس يظهر للكل، والإضافة مفتوحة لكن دايمًا "مستني الاعتماد"
+    // الاعتماد والحذف للأدمن بس
+    match /reviews/{id} {
+      allow read: if isAdmin() || resource.data.approved == true;
+      allow create: if request.resource.data.approved == false
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.productId is string
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 60
+        && request.resource.data.text is string
+        && request.resource.data.text.size() <= 500;
+      allow update, delete: if isAdmin();
     }
   }
 }
