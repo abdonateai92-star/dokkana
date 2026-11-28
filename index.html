@@ -1170,6 +1170,30 @@ $("favBtn").onclick = openFavs;
 skeleton();
 loadAll().catch(()=>{ $("grid").innerHTML = `<div class="empty"><span class="e">${XSVG}</span>تعذر التحميل — تأكد من الإنترنت وحدّث الصفحة</div>`; });
 
+/* ---------- تحديث لحظي: أي تعديل من لوحة الأدمن يظهر في المتجر فورًا ---------- */
+(function liveSync(){
+  let pending = false;
+  const refresh = () => {
+    if (pending) return;
+    pending = true;
+    loadAll(true).catch(()=>{}).finally(()=>{ pending = false; });
+  };
+  const watchCol = col => {
+    let first = true;
+    db.collection(col).onSnapshot(snap => {
+      if (first) { first = false; return; }
+      if (snap.docChanges().length) refresh();
+    }, ()=>{});
+  };
+  watchCol("products");
+  watchCol("categories");
+  let sFirst = true;
+  db.collection("settings").doc("store").onSnapshot(() => {
+    if (sFirst) { sFirst = false; return; }
+    refresh();
+  }, ()=>{});
+})();
+
 </script>
 </body>
 </html>
