@@ -362,7 +362,7 @@ async function startEdit(id){
   const p = (await db.collection("products").doc(id).get()).data(); if(!p) return;
   editId = id;
   editImages = (p.images||[]).filter(s=>s.startsWith("data:"));
-  renderProducts();
+  await renderProducts();
   $("prName").value = p.name||""; $("prPrice").value = p.price||""; $("prOld").value = p.oldPrice||"";
   $("prStock").value = (p.stock===null||p.stock===undefined) ? "" : p.stock;
   $("prCat").value = p.categoryId||""; $("prDesc").value = p.description||"";
