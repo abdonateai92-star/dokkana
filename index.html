@@ -2,11 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>دكانة — تسوق أونلاين في مصر | ملابس وإكسسوارات وإلكترونيات</title>
 <meta name="description" content="دكانة: متجر مصري أونلاين — ملابس رجالي وحريمي، إكسسوارات، وإلكترونيات. الدفع كاش عند الاستلام أو فودافون كاش، وتوصيل لكل المحافظات.">
-<meta name="theme-color" content="#0b2e59">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12283f">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0c">
 <meta property="og:type" content="website">
 <meta property="og:title" content="دكانة — تسوق أونلاين في مصر">
 <meta property="og:description" content="ملابس وإكسسوارات وإلكترونيات — كاش عند الاستلام أو فودافون كاش، توصيل لكل المحافظات.">
@@ -21,13 +24,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Changa:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pine:#0e2a47; --pine2:#173d63; --pine3:#1f5f9e; --mint:#0e9f6e; --amber:#f2a619; --amber2:#d98c0a; --amber-soft:#fbeecd;
-  --terra:#c85a2a; --terra2:#a8481f; --terra-soft:#fbe9e0;
-  --bg:#f6f1e7; --card:#fffdf7; --ink:#221a10; --mut:#7a6f5e; --line:#e8dfc9;
-  --red:#d94343; --ok:#0a8a4a; --rad:16px;
-  --ph:#eee7d6; --soft:#f3ecdc; --redsoft:#fbe9e4; --amberline:#f3d794;
-  --foot:#081c33; --foottx:#cfc4ac; --ring:rgba(34,26,16,.09);
-  --shadow:0 1px 2px rgba(34,26,16,.07),0 6px 18px rgba(34,26,16,.08);
+  --pine:#0f0f12; --pine2:#191920; --pine3:#2b230f; --mint:#d4af37; --amber:#d4af37; --amber2:#9c7c24; --amber-soft:#241d0e;
+  --terra:#e8c766; --terra2:#c9a135; --terra-soft:#2a2310;
+  --bg:#0a0a0c; --card:#16161a; --ink:#f0e8d5; --mut:#9f9478; --line:#2a2820;
+  --red:#e86a5a; --ok:#3ddc97; --rad:16px;
+  --ph:#1e1c16; --soft:#1d1b15; --redsoft:#2c1a13; --amberline:#54451d;
+  --foot:#070708; --foottx:#b0a488; --ring:rgba(212,175,55,.18);
+  --shadow:0 1px 2px rgba(0,0,0,.55),0 6px 18px rgba(0,0,0,.4);
 }
 *{ margin:0; padding:0; box-sizing:border-box; font-family:'Tajawal',sans-serif; -webkit-tap-highlight-color:transparent; }
 h1,h2,h3,.lword,.price,.bigbtn,.addbtn,.fbrand,.starpick{ font-family:'Changa',sans-serif; }
@@ -39,7 +42,7 @@ svg{ display:block; }
 
 /* الهيدر: البحث أولًا */
 header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12px 14px 14px;
-  position:sticky; top:0; z-index:60; box-shadow:0 4px 18px rgba(8,18,32,.35); }
+  position:sticky; top:0; z-index:60; box-shadow:0 4px 18px rgba(0,0,0,.55); }
 .toprow{ display:flex; align-items:center; gap:10px; }
 .logo{ display:flex; align-items:center; gap:9px; white-space:nowrap; }
 .logo .lmark{ width:34px; height:34px; flex:none; filter:drop-shadow(0 3px 8px rgba(0,0,0,.28)); }
@@ -47,7 +50,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .logo .lword i{ color:var(--amber); font-style:normal; }
 #cartBtn{ margin-inline-start:auto; background:var(--amber); border:none; border-radius:12px;
   width:42px; height:42px; cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 12px rgba(245,181,63,.4); }
+  box-shadow:0 4px 14px rgba(212,175,55,.35); }
 #cartBtn svg{ width:21px; height:21px; }
 #cartCount{ position:absolute; top:-6px; inset-inline-start:-6px; background:var(--red); color:#fff;
   border-radius:999px; min-width:19px; height:19px; font-size:10.5px; font-weight:800;
@@ -55,7 +58,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 #favBtn{ background:var(--card); border:none; border-radius:12px;
   width:42px; height:42px; cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center; }
 #favBtn svg{ width:21px; height:21px; }
-#favCount{ position:absolute; top:-6px; inset-inline-start:-6px; background:var(--terra); color:#fff;
+#favCount{ position:absolute; top:-6px; inset-inline-start:-6px; background:var(--terra); color:#14100a;
   border-radius:999px; min-width:19px; height:19px; font-size:10.5px; font-weight:800;
   display:flex; align-items:center; justify-content:center; padding:0 4px; border:2px solid var(--pine); }
 .favheart{ position:absolute; bottom:8px; inset-inline-end:8px; width:32px; height:32px; border-radius:999px;
@@ -81,7 +84,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 #search::placeholder{ color:var(--mut); }
 
 /* شريط العرض الترويجي */
-#announce{ display:none; margin:12px 12px 0; background:linear-gradient(120deg,var(--amber),#ffd166);
+#announce{ display:none; margin:12px 12px 0; background:linear-gradient(120deg,var(--amber),#f2dc9a);
   color:var(--pine); border-radius:var(--rad); padding:11px 14px; font-weight:800; font-size:13px;
   box-shadow:0 4px 14px rgba(245,181,63,.35); position:relative; overflow:hidden; }
 #announce::after{ content:""; position:absolute; inset:-30px auto auto -30px; width:110px; height:110px;
@@ -92,7 +95,8 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 #cats::-webkit-scrollbar{ display:none; }
 .catc{ background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:58px; }
 .catc .circ{ width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  color:#fff; font-weight:900; font-size:20px; box-shadow:var(--shadow); border:3px solid var(--card); transition:transform .15s; }
+  color:var(--amber); font-weight:900; font-size:20px; box-shadow:var(--shadow); border:1px solid var(--amberline); transition:transform .15s; }
+.catc:first-child .circ{ background:var(--amber) !important; color:#14100a; border-color:var(--amber); }
 .catc:active .circ{ transform:scale(.92); }
 .catc.on .circ{ outline:3px solid var(--mint); outline-offset:2px; }
 .catc span{ font-size:11.5px; font-weight:700; color:var(--mut); text-align:center; max-width:64px; line-height:1.4; }
@@ -121,7 +125,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 #sort{ border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:6px 12px;
   font-size:12.5px; font-weight:700; color:var(--mut); outline:none; }
 .sec-title{ font-size:16px; font-weight:900; padding:10px 16px 0; display:flex; align-items:center; gap:7px; }
-.sec-title::before{ content:""; width:8px; height:20px; border-radius:4px; background:var(--pine); }
+.sec-title::before{ content:""; width:8px; height:20px; border-radius:4px; background:linear-gradient(180deg,var(--amber),var(--amber2)); }
 #grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:10px 12px; max-width:1100px; margin:auto; }
 @media(min-width:640px){ #grid{ grid-template-columns:repeat(3,1fr); gap:14px; } }
 @media(min-width:900px){ #grid{ grid-template-columns:repeat(4,1fr); gap:16px; } }
@@ -134,7 +138,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .card:active img{ transform:scale(1.05); }
 .badge-off{ position:absolute; top:8px; inset-inline-start:8px; background:var(--red); color:#fff;
   border-radius:999px; padding:2px 9px; font-size:10.5px; font-weight:800; box-shadow:0 3px 8px rgba(232,69,92,.4); }
-.badge-out{ position:absolute; inset:0; background:rgba(255,255,255,.75); display:flex; align-items:center;
+.badge-out{ position:absolute; inset:0; background:rgba(10,10,12,.72); display:flex; align-items:center;
   justify-content:center; font-weight:800; color:var(--red); font-size:14.5px; }
 .card .info{ padding:9px 11px 11px; flex:1; display:flex; flex-direction:column; gap:3px; }
 .card .name{ font-size:13px; font-weight:700; line-height:1.5; min-height:2.9em;
@@ -142,7 +146,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .price{ font-weight:700; color:var(--ink); font-size:17.5px; }
 .old{ text-decoration:line-through; color:var(--mut); font-size:11.5px; font-weight:600; margin-inline-start:6px; }
 .low{ font-size:11px; color:var(--amber2); font-weight:800; }
-.addbtn{ margin-top:7px; background:linear-gradient(180deg,var(--terra),var(--terra2)); color:#fff8ee; border:none; border-radius:999px;
+.addbtn{ margin-top:7px; background:linear-gradient(180deg,var(--terra),var(--terra2)); color:#14100a; border:none; border-radius:999px;
   padding:9px; font-weight:700; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; gap:6px;
   box-shadow:0 5px 12px rgba(200,90,42,.32); }
 .addbtn svg{ width:15px; height:15px; display:inline; }
@@ -200,26 +204,26 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .opts{ display:flex; gap:8px; flex-wrap:wrap; }
 .opt{ border:1.5px solid var(--line); border-radius:11px; padding:8px 18px; font-weight:700; font-size:13px;
   cursor:pointer; background:var(--soft); color:var(--ink); transition:all .15s; }
-.opt.sel{ border-color:var(--pine); background:var(--pine); color:#fff; }
+.opt.sel{ border-color:var(--amber); background:var(--amber); color:#14100a; }
 .qty{ display:flex; align-items:center; gap:16px; }
 .qty button{ width:40px; height:40px; border-radius:13px; border:1.5px solid var(--line); background:var(--soft);
   font-size:18px; font-weight:800; cursor:pointer; }
 .qty b{ font-size:17px; min-width:22px; text-align:center; }
-.bigbtn{ width:100%; background:linear-gradient(180deg,var(--terra),var(--terra2)); color:#fff8ee; border:none;
+.bigbtn{ width:100%; background:linear-gradient(180deg,var(--terra),var(--terra2)); color:#14100a; border:none;
   border-radius:16px; padding:15px; font-size:16.5px; font-weight:700; cursor:pointer; margin-top:16px;
-  box-shadow:0 8px 18px rgba(200,90,42,.4); transition:transform .12s; }
+  box-shadow:0 8px 18px rgba(212,175,55,.28); transition:transform .12s; }
 .bigbtn:active{ transform:scale(.98); }
 .bigbtn:disabled{ opacity:.55; box-shadow:none; }
-.ghostbtn{ width:100%; background:var(--soft); color:var(--pine); border:none; border-radius:14px;
+.ghostbtn{ width:100%; background:var(--soft); color:var(--ink); border:none; border-radius:14px;
   padding:13px; font-size:14px; font-weight:800; cursor:pointer; margin-top:10px; }
 .cartrow{ display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--line); align-items:flex-start; }
 .cartrow img{ width:62px; height:62px; border-radius:13px; object-fit:cover; background:var(--ph); }
 .cartrow .cinfo{ flex:1; font-size:13.5px; line-height:1.7; }
 .cartrow .rm{ background:var(--redsoft); border:none; color:var(--red); cursor:pointer; font-size:12px; font-weight:800; border-radius:10px; padding:6px 10px; }
-.freeship{ margin:10px 0 2px; background:var(--amber-soft); border:1px solid var(--amberline); border-radius:12px; padding:9px 12px; font-size:13px; font-weight:700; color:var(--pine); }
-.freeship .bar{ height:6px; border-radius:99px; background:rgba(11,46,89,.12); margin-top:7px; overflow:hidden; }
-.freeship .bar i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--amber),#d98e04); transition:width .3s; }
-.freeship.done{ background:#e8f6ef; border-color:#b9e4cf; color:#0a7d32; }
+.freeship{ margin:10px 0 2px; background:var(--amber-soft); border:1px solid var(--amberline); border-radius:12px; padding:9px 12px; font-size:13px; font-weight:700; color:var(--ink); }
+.freeship .bar{ height:6px; border-radius:99px; background:rgba(212,175,55,.14); margin-top:7px; overflow:hidden; }
+.freeship .bar i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--amber),var(--terra)); transition:width .3s; }
+.freeship.done{ background:var(--amber-soft); border-color:var(--amber); color:var(--amber); }
 .cstars{ margin-top:4px; font-size:11.5px; font-weight:800; color:#b8860b; display:flex; align-items:center; gap:3px; }
 .cstars svg{ width:12px; height:12px; }
 .starsrow{ display:inline-flex; gap:1px; vertical-align:-2px; }
@@ -239,7 +243,7 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .relsec{ margin-top:18px; border-top:1px solid var(--line); padding-top:14px; }
 .relsec h3{ font-size:16px; font-weight:900; margin-bottom:10px; }
 .remember{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--mut); margin:-4px 0 13px; cursor:pointer; }
-.remember input{ width:18px; height:18px; accent-color:var(--pine); }
+.remember input{ width:18px; height:18px; accent-color:var(--amber); }
 .totals{ margin-top:14px; font-size:14.5px; }
 .totals>div{ display:flex; justify-content:space-between; padding:6px 0; }
 .totals .grand{ font-weight:900; font-size:18px; border-top:2px dashed var(--line); padding-top:11px; margin-top:8px; }
@@ -248,17 +252,17 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .field label{ font-weight:800; font-size:13px; display:block; margin-bottom:6px; }
 .field input,.field select,.field textarea{ width:100%; padding:12px 14px; border:1.5px solid var(--line);
   border-radius:13px; font-size:15px; background:var(--soft); outline:none; transition:all .15s; }
-.field input:focus,.field select:focus,.field textarea:focus{ border-color:var(--pine); background:var(--card); box-shadow:0 0 0 4px var(--ring); }
+.field input:focus,.field select:focus,.field textarea:focus{ border-color:var(--amber); background:var(--card); box-shadow:0 0 0 4px var(--ring); }
 .payopt{ display:flex; gap:10px; }
 .payopt label{ flex:1; border:1.5px solid var(--line); border-radius:14px; padding:13px 8px; text-align:center;
   font-weight:800; font-size:13px; cursor:pointer; color:var(--ink); background:var(--card); transition:all .15s; }
 .payopt input{ display:none; }
-.payopt label.sel{ border-color:var(--pine); background:var(--pine); color:#fff; }
+.payopt label.sel{ border-color:var(--amber); background:var(--amber); color:#14100a; }
 .vfbox{ background:var(--amber-soft); border:1.5px solid var(--amberline); border-radius:14px; padding:13px;
   font-size:14px; margin-top:12px; display:none; line-height:2; }
 .promorow{ display:flex; gap:8px; }
 .promorow input{ flex:1; }
-.promorow button{ border:none; background:var(--pine); color:#fff; border-radius:13px; padding:0 20px; font-weight:800; cursor:pointer; }
+.promorow button{ border:none; background:var(--amber); color:#14100a; border-radius:13px; padding:0 20px; font-weight:800; cursor:pointer; }
 #promoMsg{ font-size:12.5px; margin-top:6px; font-weight:800; }
 .success{ text-align:center; padding:24px 6px; }
 .success .check{ width:84px; height:84px; border-radius:50%; background:var(--mint); display:flex; align-items:center; justify-content:center; margin:4px auto 14px; box-shadow:0 10px 24px rgba(14,159,110,.4); }
@@ -276,25 +280,25 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 .st.now i{ background:var(--amber); color:var(--pine); box-shadow:0 0 0 5px rgba(245,181,63,.3); }
 
 /* التنقل السفلي */
-nav{ position:fixed; bottom:0; right:0; left:0; background:rgba(255,255,255,.97); backdrop-filter:blur(8px);
+nav{ position:fixed; bottom:0; right:0; left:0; background:rgba(12,12,16,.96); backdrop-filter:blur(8px);
   border-top:1px solid var(--line); z-index:90; display:flex; box-shadow:0 -4px 20px rgba(14,42,35,.08); }
 nav a{ flex:1; text-align:center; padding:9px 0 7px; text-decoration:none; color:var(--mut);
   font-size:11.5px; font-weight:800; border-top:3px solid transparent; display:flex; flex-direction:column; align-items:center; gap:2px; }
 nav a svg{ width:22px; height:22px; }
 nav a.on{ color:var(--terra); border-top-color:var(--amber); }
 nav a{ font-family:'Changa',sans-serif; }
-#toast{ position:fixed; bottom:92px; right:50%; transform:translateX(50%); background:#221a10; color:#fff8ee;
+#toast{ position:fixed; bottom:92px; right:50%; transform:translateX(50%); background:#221a10; color:#14100a;
   border-radius:999px; padding:12px 22px; font-size:13.5px; font-weight:800; z-index:200; display:none;
   box-shadow:0 8px 24px rgba(14,42,35,.35); max-width:88vw; text-align:center; }
 
 /* ---------- v4: هيرو سلايدر ---------- */
 #hero{ margin:12px 12px 0; border-radius:22px; overflow:hidden; position:relative;
-  box-shadow:0 12px 28px rgba(14,42,35,.18); animation:fadeUp .5s ease both; }
+  box-shadow:0 12px 28px rgba(0,0,0,.45); animation:fadeUp .5s ease both; }
 .hero-track{ display:flex; transition:transform .5s cubic-bezier(.25,.8,.3,1); }
 .hero-slide{ min-width:100%; min-height:158px; padding:22px 20px 26px; position:relative; overflow:hidden;
   display:flex; flex-direction:column; justify-content:center; color:#fff;
   background:linear-gradient(140deg,var(--pine) 10%,var(--pine2) 55%,var(--pine3)); }
-.hero-slide.alt{ background:linear-gradient(140deg,var(--amber2),var(--amber) 55%,#ffd166); color:var(--pine); }
+.hero-slide.alt{ background:linear-gradient(140deg,var(--amber2),var(--amber) 55%,#f2dc9a); color:var(--pine); }
 .hero-slide::after{ content:""; position:absolute; inset:auto -40px -60px auto; width:170px; height:170px;
   border-radius:50%; background:rgba(255,255,255,.07); }
 .sealwm{ position:absolute; inset:auto -24px -40px auto; width:200px; height:200px; opacity:.1;
@@ -304,18 +308,18 @@ nav a{ font-family:'Changa',sans-serif; }
 .alt .hero-kick{ color:var(--pine); opacity:.75; }
 .hero-h{ font-family:'Rakkas',serif; font-weight:400; font-size:32px; line-height:1.5; margin:6px 0 8px; position:relative; z-index:1; }
 .hero-sub{ font-size:13.5px; opacity:.88; margin-bottom:16px; position:relative; z-index:1; line-height:1.7; max-width:85%; }
-.hero-cta{ align-self:flex-start; background:linear-gradient(180deg,var(--terra),var(--terra2)); color:#fff8ee; border:0; border-radius:999px;
+.hero-cta{ align-self:flex-start; background:linear-gradient(180deg,var(--terra),var(--terra2)); color:#14100a; border:0; border-radius:999px;
   padding:11px 24px; font-weight:700; font-size:14.5px; cursor:pointer; position:relative; z-index:1; font-family:'Changa',sans-serif;
   box-shadow:0 8px 18px rgba(200,90,42,.45); transition:transform .15s ease; }
-.alt .hero-cta{ background:var(--pine); color:#fff; box-shadow:0 8px 18px rgba(14,42,71,.4); }
+.alt .hero-cta{ background:#0f0f12; color:var(--amber); box-shadow:0 8px 18px rgba(0,0,0,.45); }
 .hero-cta:active{ transform:scale(.94); }
 .hero-dots{ position:absolute; bottom:11px; inset-inline-start:14px; display:flex; gap:6px; z-index:2;
   background:rgba(8,18,32,.35); padding:5px 8px; border-radius:11px; }
 .hero-dots i{ width:6px; height:6px; border-radius:4px; background:rgba(255,255,255,.55); transition:all .3s ease; }
 .hero-dots i.on{ width:20px; background:#fff; }
 /* ---------- v4: شارات وتفاصيل ---------- */
-.badge-new{ position:absolute; top:8px; inset-inline-end:8px; background:var(--mint); color:#fff;
-  font-size:11px; font-weight:800; padding:4px 9px; border-radius:10px; box-shadow:0 4px 10px rgba(14,159,110,.4); z-index:1; }
+.badge-new{ position:absolute; top:8px; inset-inline-end:8px; background:#16161a; color:var(--amber); border:1px solid var(--amberline);
+  font-size:11px; font-weight:800; padding:4px 9px; border-radius:10px; z-index:1; }
 .circ svg{ width:26px; height:26px; }
 /* ---------- v4: مايكرو-إنتراكشنز ---------- */
 @keyframes fadeUp{ from{ opacity:0; transform:translateY(12px); } to{ opacity:1; transform:none; } }
@@ -352,48 +356,27 @@ nav a{ transition:color .2s ease; }
 .off-pill{ background:var(--red); color:#fff; font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:10px; margin-inline-start:6px; }
 .imgcount{ position:absolute; top:10px; inset-inline-end:10px; background:rgba(14,42,35,.65); color:#fff; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:12px; z-index:2; direction:ltr; }
 .ptrust{ display:flex; gap:8px; margin:12px 0 4px; }
-.ptrust div{ flex:1; background:var(--amber-soft); border-radius:12px; padding:8px 4px; text-align:center; font-size:11px; font-weight:700; color:var(--pine); }
+.ptrust div{ flex:1; background:var(--amber-soft); border:1px solid var(--amberline); border-radius:12px; padding:8px 4px; text-align:center; font-size:11px; font-weight:700; color:var(--amber); }
 .ptrust svg{ width:18px; height:18px; display:block; margin:0 auto 4px; }
 .oitems{ background:var(--soft); border-radius:14px; padding:10px 12px; margin-bottom:14px; max-height:150px; overflow:auto; }
 .oitems .oi{ display:flex; align-items:center; gap:10px; padding:5px 0; font-size:13px; }
 .oitems img{ width:38px; height:38px; border-radius:9px; object-fit:cover; flex:none; }
-.oitems .q{ margin-inline-start:auto; font-weight:800; color:var(--pine); white-space:nowrap; }
+.oitems .q{ margin-inline-start:auto; font-weight:800; color:var(--ink); white-space:nowrap; }
 .reassure{ text-align:center; font-size:12px; color:var(--mut); margin-top:10px; }
 .trust{ display:flex; gap:10px; margin:22px 12px 0; }
-.trust div{ flex:1; background:#fff; border-radius:16px; padding:14px 6px; text-align:center; font-size:12px; font-weight:800; color:var(--pine); box-shadow:var(--shadow); }
+.trust div{ flex:1; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 6px; text-align:center; font-size:12px; font-weight:800; color:var(--ink); box-shadow:var(--shadow); }
 .trust svg{ width:22px; height:22px; display:block; margin:0 auto 6px; }
 .trust a{ color:inherit; text-decoration:none; }
 .courierbox{ display:flex; align-items:center; gap:10px; background:var(--amber-soft); border:1px solid var(--amberline); border-radius:14px; padding:12px 14px; margin-top:12px; font-size:13.5px; }
 .courierbox svg{ width:20px; height:20px; flex:none; }
-.courierbox b{ color:var(--pine); }
+.courierbox b{ color:var(--ink); }
 .price, .old, .low{ font-variant-numeric:tabular-nums; }
 .ordercode{ direction:ltr; }
 nav{ padding-bottom:env(safe-area-inset-bottom); }
 body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
 .sheet{ overscroll-behavior:contain; }
-.clearsearch{ display:block; margin:14px auto 0; background:#fff; border:1.5px solid var(--pine); color:var(--pine); border-radius:12px; padding:9px 22px; font-weight:800; font-size:13.5px; cursor:pointer; }
+.clearsearch{ display:block; margin:14px auto 0; background:var(--card); border:1.5px solid var(--amber); color:var(--amber); border-radius:12px; padding:9px 22px; font-weight:800; font-size:13.5px; cursor:pointer; }
 
-/* ---------- v6: الوضع الليلي ---------- */
-@media (prefers-color-scheme: dark){
-  :root{
-    --pine:#14304e; --pine2:#1a3a5f; --pine3:#24507f; --mint:#2ac98f; --amber:#f5b53f; --amber2:#e8a83e; --amber-soft:#2e2510;
-    --terra:#e07a45; --terra2:#e07a45; --terra-soft:#33200f;
-    --bg:#15100b; --card:#211a12; --ink:#f3ead8; --mut:#a1937c; --line:#372c1d;
-    --red:#ff7d6b; --ok:#3ddc97;
-    --ph:#2c2417; --soft:#2a2115; --redsoft:#35201a; --amberline:#4a3a1a;
-    --foot:#0b1930; --foottx:#a89a80; --ring:rgba(0,0,0,.35);
-    --shadow:0 1px 2px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.35);
-  }
-  header{ box-shadow:0 4px 18px rgba(0,0,0,.5); }
-  nav{ background:rgba(16,32,51,.96); box-shadow:0 -4px 20px rgba(0,0,0,.4); }
-  nav a.on{ color:var(--terra); }
-  .opt.sel, .payopt label.sel{ background:var(--amber); border-color:var(--amber); color:#081220; }
-  .promorow button{ background:var(--amber); color:#081220; }
-  .ghostbtn, .closeX, .qty button{ color:var(--ink); }
-  .catc.on .circ{ outline-color:var(--amber); }
-  .catc:first-child .circ{ background:var(--amber) !important; color:#081220; }
-  .logo .lword{ color:#fff; }
-}
 .pyr{ position:absolute; bottom:0; inset-inline-end:12px; width:132px; opacity:.14; z-index:0; }
 </style>
 </head>
@@ -402,20 +385,20 @@ body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
 <header>
   <div class="toprow">
     <div class="logo">
-      <svg class="lmark" viewBox="0 0 140 140" fill="none"><rect x="6" y="6" width="128" height="128" rx="36" fill="#f2a619"/><rect x="17" y="17" width="106" height="106" rx="27" fill="none" stroke="#0b2e59" stroke-width="5"/><g transform="translate(23,27) scale(0.72)"><path d="M114 14 L100 30 C68 12 26 34 26 66 C26 92 58 102 104 96" stroke="#0b2e59" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="66" cy="56" r="14" fill="#0b2e59"/></g></svg>
+      <svg class="lmark" viewBox="0 0 140 140" fill="none"><rect x="6" y="6" width="128" height="128" rx="36" fill="#d4af37"/><rect x="17" y="17" width="106" height="106" rx="27" fill="none" stroke="#101014" stroke-width="5"/><g transform="translate(23,27) scale(0.72)"><path d="M114 14 L100 30 C68 12 26 34 26 66 C26 92 58 102 104 96" stroke="#101014" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/><circle cx="66" cy="56" r="14" fill="#101014"/></g></svg>
       <span class="lword">دكانة<i>.</i></span>
     </div>
     <button id="cartBtn" aria-label="السلة">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0e2a23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#14100a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>
       <span id="cartCount">0</span>
     </button>
     <button id="favBtn" aria-label="المفضلة">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#c85a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7Z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7Z"/></svg>
       <span id="favCount" style="display:none">0</span>
     </button>
   </div>
   <div class="searchwrap">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#0e2a23" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="#14100a" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
     <input id="search" placeholder="دوّر على أي منتج…">
   </div>
 </header>
@@ -452,9 +435,9 @@ body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
     <div class="desc" id="pDesc"></div>
     <div id="pRate" style="margin-top:8px"></div>
     <div class="ptrust">
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>كاش عند الاستلام</div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6Z"/><path d="M9 11.5l2 2 4-4"/></svg>طلبك مضمون</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>كاش عند الاستلام</div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6Z"/><path d="M9 11.5l2 2 4-4"/></svg>طلبك مضمون</div>
     </div>
     <div class="optrow" id="sizeRow" style="display:none"><label>المقاس</label><div class="opts" id="pSizes"></div></div>
     <div class="optrow" id="colorRow" style="display:none"><label>اللون</label><div class="opts" id="pColors"></div></div>
@@ -594,9 +577,9 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const C = DokkanaCore;
 const $ = id => document.getElementById(id);
-const ADDSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;display:inline;vertical-align:-2px"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>';
-const BAGSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#eda415" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><path d="M6 7h12l1.5 13.5a1 1 0 0 1-1 1.1H5.5a1 1 0 0 1-1-1.1Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>';
-const MAGSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#eda415" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>';
+const ADDSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;display:inline;vertical-align:-2px"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 7H6"/></svg>';
+const BAGSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><path d="M6 7h12l1.5 13.5a1 1 0 0 1-1 1.1H5.5a1 1 0 0 1-1-1.1Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>';
+const MAGSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>';
 const STAR_PATH = "M12 2.6l2.8 6 6.6.7-4.9 4.4 1.3 6.5L12 16.9l-5.8 3.3 1.3-6.5-4.9-4.4 6.6-.7z";
 const STARSM = '<svg viewBox="0 0 24 24" fill="#0e2a47"><path d="'+STAR_PATH+'"/></svg>';
 const STAR_FULL = '<svg viewBox="0 0 24 24" fill="#f5b53f"><path d="'+STAR_PATH+'"/></svg>';
@@ -650,17 +633,17 @@ function skeleton(){ $("grid").innerHTML = Array(6).fill('<div class="sk"><div c
 
 const CAT_COLORS = ["#0e9f6e","#7c5cf0","#e8608a","#2f7de1","#e8a13c","#12a5b0","#c05621","#5a67d8"];
 const CAT_ICONS = [
-  [/ملابس|أطفال|تيشيرت|جينز|بنطلون/, '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3l4 2 2 4-3 1v11H5V10L2 9l2-4 4-2a4 4 0 0 0 8 0Z"/></svg>'],
-  [/إكسسوار|ساع|شنط|محافظ|نظار|حزام/, '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18"/></svg>'],
-  [/إلكترون|موبايل|سماع|شاحن|كمبيوتر|تابلت/, '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>'],
-  [/عناية|تجميل|عطر|مكياج/, '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M18.5 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z"/></svg>'],
-  [/منزل|مطبخ|ديكور|أدوات/, '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>']
+  [/ملابس|أطفال|تيشيرت|جينز|بنطلون/, '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3l4 2 2 4-3 1v11H5V10L2 9l2-4 4-2a4 4 0 0 0 8 0Z"/></svg>'],
+  [/إكسسوار|ساع|شنط|محافظ|نظار|حزام/, '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18"/></svg>'],
+  [/إلكترون|موبايل|سماع|شاحن|كمبيوتر|تابلت/, '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>'],
+  [/عناية|تجميل|عطر|مكياج/, '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M18.5 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z"/></svg>'],
+  [/منزل|مطبخ|ديكور|أدوات/, '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>']
 ];
 function catIcon(name){ const hit = CAT_ICONS.find(([re])=>re.test(name)); return hit ? hit[1] : name.trim().charAt(0); }
 function renderCats(){
   const circ = (t,color) => `<div class="circ" style="background:${color}">${t}</div>`;
-  $("cats").innerHTML = `<button class="catc ${state.cat==='all'?'on':''}" onclick="pickCat('all')">${circ("الكل","var(--pine)")}<span>الكل</span></button>` +
-    cats.map((c,i) => `<button class="catc ${state.cat===c.id?'on':''}" onclick="pickCat('${c.id}')">${circ(catIcon(c.name), CAT_COLORS[i%CAT_COLORS.length])}<span>${c.name}</span></button>`).join("");
+  $("cats").innerHTML = `<button class="catc ${state.cat==='all'?'on':''}" onclick="pickCat('all')">${circ("الكل","var(--amber)")}<span>الكل</span></button>` +
+    cats.map((c,i) => `<button class="catc ${state.cat===c.id?'on':''}" onclick="pickCat('${c.id}')">${circ(catIcon(c.name), "var(--soft)")}<span>${c.name}</span></button>`).join("");
 }
 const PAGE_SIZE = 10; let shown = PAGE_SIZE;
 function showMore(){ shown += PAGE_SIZE; renderGrid(); }
@@ -707,13 +690,13 @@ function renderFooter(){
   const el = $("foot"); if (!el) return;
   const tr = $("trust");
   if (tr) tr.innerHTML = `
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>كاش عند الاستلام</div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>فودافون كاش</div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>`;
-  const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>';
-  const PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>';
-  const TRUCK = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>';
-  const CARD = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>';
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>كاش عند الاستلام</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>فودافون كاش</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>توصيل لكل المحافظات</div>`;
+  const CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/></svg>';
+  const PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>';
+  const TRUCK = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg>';
+  const CARD = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10.5h20"/><path d="M6 15.5h4"/></svg>';
   const wa = settings.whatsappNumber ? `<div class="frow">${CHAT}<div>خدمة العملاء: <a href="https://wa.me/${settings.whatsappNumber}" target="_blank" rel="noopener">كلمنا واتساب</a></div></div>` : "";
   const fab = $("waFab");
   if (fab && settings.whatsappNumber){ fab.href = "https://wa.me/" + settings.whatsappNumber + "?text=" + encodeURIComponent("أهلًا دكانة، عندي استفسار"); fab.style.display = "flex"; }
@@ -724,7 +707,7 @@ function renderFooter(){
     <div class="frow">${TRUCK}<div>توصيل سريع لكل المحافظات</div></div>
     <div class="frow">${CARD}<div>الدفع كاش عند الاستلام</div></div>
     ${vf}${wa}
-    <div class="frow"><svg viewBox="0 0 24 24" fill="none" stroke="#f5b53f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.6-8 9-4.8-1.4-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><div><a href="#" onclick="event.preventDefault();openPolicy()">سياسة الاستبدال والاسترجاع</a></div></div>
+    <div class="frow"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.6-8 9-4.8-1.4-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><div><a href="#" onclick="event.preventDefault();openPolicy()">سياسة الاستبدال والاسترجاع</a></div></div>
     <div class="fcopy">دكانة © 2026 — كل الحقوق محفوظة</div>`;
 }
 function clearSearch(){ const s = $("search"); if (s) s.value = ""; state.q = ""; shown = PAGE_SIZE; renderGrid(); }
@@ -764,7 +747,7 @@ function renderGrid(){
   const list = visibleProducts();
   $("count").textContent = list.length ? list.length+" منتج" : "";
   if (!list.length){
-    const BAG = `<span class="e"><svg viewBox="0 0 24 24" fill="none" stroke="#eda415" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.5 13.5a1 1 0 0 1-1 1.1H5.5a1 1 0 0 1-1-1.1Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg></span>`;
+    const BAG = `<span class="e"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1.5 13.5a1 1 0 0 1-1 1.1H5.5a1 1 0 0 1-1-1.1Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg></span>`;
     if (!products.length && !state.q && state.cat==="all")
       $("grid").innerHTML = `<div class="empty">${BAG}<b style="display:block;font-size:18px;font-weight:900;color:var(--ink)">المتجر بيتجهز!</b>المنتجات جاية في الطريق — ارجع لنا قريب</div>`;
     else
@@ -859,8 +842,8 @@ function renderCartCount(){ const n = cart.reduce((a,i)=>a+i.qty,0); $("cartCoun
 const FAV_KEY = "dokkana_favs";
 let favs = [];
 try { favs = JSON.parse(localStorage.getItem(FAV_KEY) || "[]") || []; } catch(e){ favs = []; }
-const HEARTSM = `<svg viewBox="0 0 24 24" fill="none" stroke="#c85a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7Z"/></svg>`;
-const HEARTFILL = `<svg viewBox="0 0 24 24" fill="#c85a2a" stroke="#c85a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7Z"/></svg>`;
+const HEARTSM = `<svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7Z"/></svg>`;
+const HEARTFILL = `<svg viewBox="0 0 24 24" fill="#d4af37" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7Z"/></svg>`;
 const HEARTSM_BTN = HEARTSM.replace('<svg ', '<svg style="width:15px;height:15px;display:inline;vertical-align:-2px" ');
 const HEARTFILL_BTN = HEARTFILL.replace('<svg ', '<svg style="width:15px;height:15px;display:inline;vertical-align:-2px" ');
 const isFav = id => favs.includes(id);
@@ -1034,7 +1017,7 @@ async function placeOrder(){
     const waLink = C.orderWhatsAppLink(settings.whatsappNumber, order, code);
     $("checkoutSheet").innerHTML = `
       <div class="success">
-        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M4 12.5 9.5 18 20 6.5"/></svg></div>
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M4 12.5 9.5 18 20 6.5"/></svg></div>
         <h2>طلبك وصل يا ${name.split(" ")[0]}!</h2>
         <p style="margin-top:8px;color:var(--mut)">احتفظ بكود الطلب عشان تتبعه من "تتبع طلبك" تحت</p>
         <div class="ordercode">${code}</div>
@@ -1074,7 +1057,7 @@ async function trackOrder(){
         <div class="statusline">
           ${steps.map((s,i)=>`<div class="st ${i<idx?'done':i===idx?'now done':''}"><i>${i<idx?'✓':i+1}</i>${s[1]}</div>`).join("")}
         </div>
-        ${(o.status==="courier"||o.status==="shipped")&&(o.trackingNumber||settings.courierName)?`<div class="courierbox"><svg viewBox="0 0 24 24" fill="none" stroke="#0e9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg><div>${settings.courierName?`<div>شركة الشحن: <b>${settings.courierName}</b></div>`:""}${o.trackingNumber?`<div>رقم التتبع: <b dir="ltr">${o.trackingNumber}</b></div>`:""}</div></div>`:""}
+        ${(o.status==="courier"||o.status==="shipped")&&(o.trackingNumber||settings.courierName)?`<div class="courierbox"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v10H2z"/><path d="M13 10h4l3 3v4h-7z"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/></svg><div>${settings.courierName?`<div>شركة الشحن: <b>${settings.courierName}</b></div>`:""}${o.trackingNumber?`<div>رقم التتبع: <b dir="ltr">${o.trackingNumber}</b></div>`:""}</div></div>`:""}
         <div style="background:var(--soft);border-radius:16px;padding:14px;margin-top:14px">
           ${o.items.map(i=>`<div style="font-size:13.5px;padding:3px 0">• ${i.name} ×${i.qty} ${i.size?("("+i.size+")"):""} ${i.color?("["+i.color+"]"):""}</div>`).join("")}
           <div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px;font-weight:800">الإجمالي: ${C.eg(o.total)} — ${o.payment==="vodafone"?"فودافون كاش":"كاش عند الاستلام"}</div>
