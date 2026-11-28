@@ -140,6 +140,16 @@ header{ background:linear-gradient(160deg,var(--pine),var(--pine2)); padding:12p
 
 /* الفلاتر + الشبكة */
 #controls{ display:flex; justify-content:space-between; align-items:center; padding:12px 16px 4px; }
+#priceChips{ display:flex; gap:8px; padding:6px 16px 8px; overflow-x:auto; scrollbar-width:none; }
+#priceChips::-webkit-scrollbar{ display:none; }
+.pchip{ flex:0 0 auto; border:1.5px solid var(--line); background:var(--card); color:var(--mut); border-radius:999px; padding:5px 12px; font-size:12px; font-weight:700; cursor:pointer; }
+.pchip.on{ background:var(--amber); border-color:var(--amber); color:#0a0a0c; }
+#toTop{ position:fixed; bottom:86px; inset-inline-end:14px; width:46px; height:46px; border-radius:50%;
+  background:var(--amber); border:none; display:none; align-items:center; justify-content:center; z-index:80;
+  box-shadow:0 8px 20px rgba(212,175,55,.4); cursor:pointer; }
+#toTop svg{ width:22px; height:22px; }
+.card .imgw img, .hcard .imgw img, .rcard img{ opacity:0; transition:opacity .35s ease; }
+.card .imgw img.ld, .hcard .imgw img.ld, .rcard img.ld{ opacity:1; }
 #count{ font-size:12px; color:var(--mut); font-weight:700; }
 #sort{ border:1.5px solid var(--line); background:var(--card); border-radius:999px; padding:6px 12px;
   font-size:12.5px; font-weight:700; color:var(--mut); outline:none; }
@@ -436,6 +446,7 @@ body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
       <option value="priceDesc">السعر: من الأعلى</option>
     </select>
   </div>
+  <div id="priceChips"></div>
   <div class="sec-title" id="gridTitle">كل المنتجات</div>
   <div id="grid"></div>
   <div id="moreWrap"></div>
@@ -584,6 +595,7 @@ body{ padding-bottom:calc(78px + env(safe-area-inset-bottom)); }
 
 <div id="toast"></div>
 <a id="waFab" href="#" target="_blank" rel="noopener" aria-label="كلمنا واتساب"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.2-.8l.4-.5c.1-.2.1-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.5 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3Z"/></svg></a>
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="ارجع لفوق"><svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0c" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
 <!-- FIREBASE-SCRIPTS-START -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -611,7 +623,7 @@ const XSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#d64541" stroke-width
 const CACHE_KEY = "dokkana_cache_v2", CART_KEY = "dokkana_cart", CUST_KEY = "dokkana_cust", CACHE_TTL = 5*60*1000;
 let settings = { vodafoneNumber:"", whatsappNumber:"", announcement:"", courierName:"", fees:{default:0, govs:{}} };
 let cats = [], products = [], cart = [];
-let state = { cat:"all", sort:"new", q:"" };
+let state = { cat:"all", sort:"new", q:"", price:"" };
 let cur = null, curQty = 1, selSize = "", selColor = "";
 let appliedCode = "", appliedPromo = null;
 
@@ -643,7 +655,7 @@ async function loadAll(force) {
     if (products.length) try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), settings, cats, products})); } catch(e){}
   }
   $("announce").textContent = settings.announcement || "أهلًا بيك في دكانة — ملابس وإكسسوارات وإلكترونيات، وادفع عند الاستلام"; $("announce").style.display="block";
-  renderCats(); renderGrid(); renderCartCount(); renderFavCount(); renderHero(); renderFooter(); renderRecent();
+  renderCats(); renderGrid(); renderCartCount(); renderFavCount(); renderHero(); renderFooter(); renderRecent(); renderPriceChips();
   loadReviews().then(ok => {
     renderGrid();
     if (ok && cur && $("pOverlay").classList.contains("show")){ $("pRate").innerHTML = productRateLine(cur.id); renderReviews(); }
@@ -676,6 +688,9 @@ function visibleProducts(){
   let list = state.cat==="all" ? products.slice() : products.filter(p=>p.categoryId===state.cat);
   const q = state.q.trim();
   if (q) list = list.filter(p => (p.name||"").includes(q) || (p.description||"").includes(q));
+  if (state.price==="lt500") list = list.filter(p=>p.price<500);
+  else if (state.price==="m") list = list.filter(p=>p.price>=500&&p.price<1000);
+  else if (state.price==="gt1000") list = list.filter(p=>p.price>=1000);
   if (state.sort==="priceAsc") list.sort((a,b)=>a.price-b.price);
   else if (state.sort==="priceDesc") list.sort((a,b)=>b.price-a.price);
   else list.sort((a,b)=>((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0));
@@ -748,7 +763,7 @@ function hcard(p){
   const out = outOfStock(p);
   const isNew = p.createdAt && p.createdAt.seconds && (Date.now()/1000 - p.createdAt.seconds) < 3*86400;
   return `<div class="hcard" onclick="openProduct('${p.id}')">
-    <div class="imgw"><img loading="lazy" decoding="async" src="${firstImg(p)}" alt="" onerror="this.style.visibility='hidden'">
+    <div class="imgw"><img loading="lazy" decoding="async" src="${firstImg(p)}" alt="" onload="this.classList.add('ld')" onerror="this.style.visibility='hidden'">
       ${off?`<span class="badge-off">خصم ${off}%</span>`:""}${p.bestseller?`<span class="badge-best">${STARSM}الأكثر مبيعًا</span>`:(isNew?`<span class="badge-new">جديد</span>`:"")}${out?`<div class="badge-out">نفدت الكمية</div>`:""}${favHeartBtn(p)}</div>
     <div class="info"><div class="name">${p.name}</div>
       ${rateSmall(p.id)}
@@ -764,6 +779,13 @@ function renderSections(){
   if (offers.length) secs.push(`<div class="sec" id="sec-offers"><div class="sechead"><h3><i class="hot"></i>عروض وخصومات</h3></div><div class="hscroll">${offers.map(hcard).join("")}</div></div>`);
   if (newest.length) secs.push(`<div class="sec"><div class="sechead"><h3><i></i>وصل حديثًا</h3></div><div class="hscroll">${newest.map(hcard).join("")}</div></div>`);
   el.innerHTML = secs.join("");
+}
+/* ---------- فلترة بالسعر ---------- */
+function setPrice(r){ state.price = r; shown = PAGE_SIZE; renderPriceChips(); renderGrid(); }
+function renderPriceChips(){
+  const el = $("priceChips"); if (!el) return;
+  const opts = [["","الكل"],["lt500","أقل من ٥٠٠"],["m","من ٥٠٠ لـ ١٠٠٠"],["gt1000","أكثر من ١٠٠٠"]];
+  el.innerHTML = opts.map(([v,t]) => `<button class="pchip ${state.price===v?'on':''}" onclick="setPrice('${v}')">${t}</button>`).join("");
 }
 function renderGrid(){
   renderSections();
@@ -786,7 +808,7 @@ function renderGrid(){
     const low = !out && p.stock !== null && p.stock !== undefined && p.stock !== "" && Number(p.stock) <= 3 ? `باقي ${p.stock} بس!` : "";
     const isNew = p.createdAt && p.createdAt.seconds && (Date.now()/1000 - p.createdAt.seconds) < 3*86400;
     return `<div class="card" onclick="openProduct('${p.id}')">
-      <div class="imgw"><img loading="lazy" decoding="async" src="${firstImg(p)}" alt="" onerror="this.style.visibility='hidden'">
+      <div class="imgw"><img loading="lazy" decoding="async" src="${firstImg(p)}" alt="" onload="this.classList.add('ld')" onerror="this.style.visibility='hidden'">
         ${off?`<span class="badge-off">خصم ${off}%</span>`:""}${p.bestseller?`<span class="badge-best">${STARSM}${"الأكثر مبيعًا"}</span>`:(isNew?`<span class="badge-new">جديد</span>`:"")}${out?`<div class="badge-out">نفدت الكمية</div>`:""}${favHeartBtn(p)}</div>
       <div class="info">
         <div class="name">${p.name}</div>
@@ -820,7 +842,7 @@ function renderRecent(){
   if (!items.length){ el.style.display = "none"; el.innerHTML = ""; return; }
   el.style.display = "block";
   el.innerHTML = `<div class="recent-title">${EYESVG} شفتها قبل كده</div><div class="recent-row">` +
-    items.map(p => `<div class="rcard" onclick="openProduct('${p.id}')"><img src="${firstImg(p)}" alt="${p.name}" loading="lazy" onerror="this.style.visibility='hidden'"><div class="rn">${p.name}</div><div class="rp">${C.eg(p.price)}</div></div>`).join("") +
+    items.map(p => `<div class="rcard" onclick="openProduct('${p.id}')"><img src="${firstImg(p)}" alt="${p.name}" loading="lazy" onload="this.classList.add('ld')" onerror="this.style.visibility='hidden'"><div class="rn">${p.name}</div><div class="rp">${C.eg(p.price)}</div></div>`).join("") +
     `</div>`;
 }
 function openProduct(id){
@@ -1205,6 +1227,9 @@ $("favBtn").onclick = openFavs;
 /* ---------- تشغيل ---------- */
 skeleton();
 loadAll().catch(()=>{ $("grid").innerHTML = `<div class="empty"><span class="e">${XSVG}</span>تعذر التحميل — تأكد من الإنترنت وحدّث الصفحة</div>`; });
+
+/* ---------- زرار الصعود لأعلى الصفحة ---------- */
+window.addEventListener("scroll", () => { const b = $("toTop"); if (b) b.style.display = window.scrollY > 600 ? "flex" : "none"; }, { passive:true });
 
 /* ---------- تحديث لحظي: أي تعديل من لوحة الأدمن يظهر في المتجر فورًا ---------- */
 (function liveSync(){
